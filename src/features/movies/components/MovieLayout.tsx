@@ -14,11 +14,32 @@ export default function MovieLayout() {
 	const isPopularPage = location.pathname === "/movies" || location.pathname === "/movies/";
 	const urlQuery = searchParams.get("q") || "";
 	const [navSearchQuery, setNavSearchQuery] = useState(urlQuery);
+	const [showSearchOnScroll, setShowSearchOnScroll] = useState(false);
 
 	// Synchronize navbar search input with URL search param
 	useEffect(() => {
 		setNavSearchQuery(urlQuery);
 	}, [urlQuery]);
+
+	// Handle scroll for search visibility on popular page
+	useEffect(() => {
+		if (!isPopularPage) {
+			setShowSearchOnScroll(false);
+			return;
+		}
+		const handleScroll = () => {
+			if (window.scrollY > 200) {
+				setShowSearchOnScroll(true);
+			} else {
+				setShowSearchOnScroll(false);
+			}
+		};
+		window.addEventListener("scroll", handleScroll, { passive: true });
+		handleScroll();
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	}, [isPopularPage]);
 
 	// Automatically update search params or navigate on query change
 	useEffect(() => {
@@ -250,8 +271,8 @@ export default function MovieLayout() {
 						</nav>
 					</div>
 
-					{/* Navbar Search Input (hidden on popular page) */}
-					{!isPopularPage && (
+					{/* Navbar Search Input (hidden on popular page except when scrolled down) */}
+					{(!isPopularPage || showSearchOnScroll) && (
 						<div className="relative w-full max-w-[160px] sm:max-w-[240px] animate-in fade-in slide-in-from-right-3 duration-250 shrink-0">
 							<svg
 								className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500"
