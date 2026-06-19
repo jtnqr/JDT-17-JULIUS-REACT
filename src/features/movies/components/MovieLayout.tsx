@@ -9,6 +9,7 @@ export default function MovieLayout() {
 	const location = useLocation();
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
 	const isPopularPage = location.pathname === "/movies" || location.pathname === "/movies/";
@@ -222,9 +223,9 @@ export default function MovieLayout() {
 							</span>
 						</Link>
 
-						{/* Movie Navigation Links */}
+						{/* Movie Navigation Links (Desktop) */}
 						<nav
-							className="flex items-center gap-3 sm:gap-5 overflow-x-auto no-scrollbar py-1"
+							className="hidden sm:flex items-center gap-3 sm:gap-5 overflow-x-auto no-scrollbar py-1"
 							aria-label="Main movie navigation"
 						>
 							<NavLink
@@ -271,9 +272,63 @@ export default function MovieLayout() {
 						</nav>
 					</div>
 
-					{/* Navbar Search Input (hidden on popular page except when scrolled down) */}
+					{/* Mobile Navigation Controls */}
+					<div className="flex sm:hidden items-center gap-1.5 shrink-0">
+						{/* Search Icon Link */}
+						<Link
+							to="/movies/search"
+							className="p-2 text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900 rounded-xl transition-colors cursor-pointer flex items-center justify-center h-9 w-9"
+							aria-label="Search movies"
+						>
+							<svg
+								className="h-5 w-5"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								strokeWidth={2}
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+								/>
+							</svg>
+						</Link>
+
+						{/* Hamburger Menu Toggle Button */}
+						<Button
+							onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+							variant="ghost"
+							className="p-2 text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900 rounded-xl cursor-pointer flex items-center justify-center h-9 w-9 focus:outline-hidden"
+							aria-label="Toggle menu"
+						>
+							{isMobileMenuOpen ? (
+								<svg
+									className="h-5 w-5"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									strokeWidth={2.5}
+								>
+									<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+								</svg>
+							) : (
+								<svg
+									className="h-5 w-5"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									strokeWidth={2.5}
+								>
+									<path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+								</svg>
+							)}
+						</Button>
+					</div>
+
+					{/* Navbar Search Input (hidden on popular page except when scrolled down, Desktop only) */}
 					{(!isPopularPage || showSearchOnScroll) && (
-						<div className="relative w-full max-w-[160px] sm:max-w-[240px] animate-in fade-in slide-in-from-right-3 duration-250 shrink-0">
+						<div className="hidden sm:block relative w-full max-w-[160px] sm:max-w-[240px] animate-in fade-in slide-in-from-right-3 duration-250 shrink-0">
 							<svg
 								className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500"
 								fill="none"
@@ -317,6 +372,60 @@ export default function MovieLayout() {
 						</div>
 					)}
 				</div>
+
+				{/* Mobile Menu Dropdown Panel */}
+				{isMobileMenuOpen && (
+					<nav
+						className="sm:hidden border-t border-zinc-900 bg-zinc-950/95 backdrop-blur-md px-4 py-3 flex flex-col gap-1.5 animate-in fade-in slide-in-from-top-2 duration-200"
+						aria-label="Mobile movie navigation"
+					>
+						<NavLink
+							to="/movies"
+							end
+							onClick={() => setIsMobileMenuOpen(false)}
+							className={({ isActive }) =>
+								`text-xs font-bold py-2.5 px-3 rounded-lg transition-colors duration-200 ${
+									isActive ? "text-amber-500 bg-zinc-900/50" : "text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900/20"
+								}`
+							}
+						>
+							Popular
+						</NavLink>
+						<NavLink
+							to="/movies/now-playing"
+							onClick={() => setIsMobileMenuOpen(false)}
+							className={({ isActive }) =>
+								`text-xs font-bold py-2.5 px-3 rounded-lg transition-colors duration-200 ${
+									isActive ? "text-amber-500 bg-zinc-900/50" : "text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900/20"
+								}`
+							}
+						>
+							Now Playing
+						</NavLink>
+						<NavLink
+							to="/movies/top-rated"
+							onClick={() => setIsMobileMenuOpen(false)}
+							className={({ isActive }) =>
+								`text-xs font-bold py-2.5 px-3 rounded-lg transition-colors duration-200 ${
+									isActive ? "text-amber-500 bg-zinc-900/50" : "text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900/20"
+								}`
+							}
+						>
+							Top Rated
+						</NavLink>
+						<NavLink
+							to="/movies/upcoming"
+							onClick={() => setIsMobileMenuOpen(false)}
+							className={({ isActive }) =>
+								`text-xs font-bold py-2.5 px-3 rounded-lg transition-colors duration-200 ${
+									isActive ? "text-amber-500 bg-zinc-900/50" : "text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900/20"
+								}`
+							}
+						>
+							Upcoming
+						</NavLink>
+					</nav>
+				)}
 			</header>
 
 			{/* Main Content */}
