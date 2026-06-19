@@ -428,7 +428,7 @@ export default function CV() {
 									),
 								)}
 							</div>{" "}
-							{/* Grouped Skills Grid */}
+							{/* Grouped Skills Tag List */}
 							<div className="space-y-8">
 								{(
 									(skillFilter === "all"
@@ -438,39 +438,36 @@ export default function CV() {
 									const categorySkills = SKILLS.filter((s) => s.category === categoryKey);
 									if (categorySkills.length === 0) return null;
 									return (
-										<div key={categoryKey} className="space-y-4">
-											<h3 className="text-xs font-bold uppercase tracking-wider text-amber-500 border-l-2 border-amber-500 pl-2">
+										<div key={categoryKey} className="space-y-3">
+											<h3 className="text-xs font-bold uppercase tracking-wider text-amber-500/90 border-l-2 border-amber-500 pl-2">
 												{CATEGORY_NAMES[categoryKey]}
 											</h3>
-											<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+											<div className="flex flex-wrap gap-2.5 pt-1">
 												{categorySkills.map((skill) => (
-													<Card
+													<div
 														key={skill.name}
-														className="border border-zinc-850/60 bg-zinc-900/10 hover:border-amber-500/20 hover:bg-zinc-900/30 rounded-xl p-4 flex flex-col justify-between transition-all duration-300 hover:-translate-y-0.5"
+														className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border select-none transition-all duration-300 ${
+															skill.level === "Advanced"
+																? "bg-amber-500/5 border-amber-500/15 hover:border-amber-500/40 hover:bg-amber-500/10"
+																: "bg-zinc-900/30 border-zinc-850 hover:border-zinc-700/60 hover:bg-zinc-900/60"
+														}`}
 													>
-														<div className="flex items-center justify-between gap-2 mb-2">
-															<span className="text-sm font-bold text-zinc-150">{skill.name}</span>
-															<span
-																className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${
-																	skill.level === "Advanced"
-																		? "bg-amber-500/10 text-amber-400 border-amber-500/20"
-																		: "bg-zinc-800/40 text-zinc-400 border-zinc-800"
-																}`}
-															>
-																{skill.level}
-															</span>
-														</div>
-
-														<div className="w-full bg-zinc-950 h-1.5 rounded-full overflow-hidden mt-2">
-															<div
-																className={`h-full rounded-full transition-all duration-500 ${
-																	skill.level === "Advanced"
-																		? "bg-gradient-to-r from-amber-500 to-orange-500 w-[90%]"
-																		: "bg-zinc-650 w-[60%]"
-																}`}
-															/>
-														</div>
-													</Card>
+														<span
+															className={`h-1.5 w-1.5 rounded-full ${
+																skill.level === "Advanced" ? "bg-amber-500" : "bg-zinc-500"
+															}`}
+														/>
+														<span className="text-xs font-medium text-zinc-150">{skill.name}</span>
+														<span
+															className={`text-[8px] font-black tracking-wider uppercase px-1 rounded-sm ${
+																skill.level === "Advanced"
+																	? "bg-amber-500/10 text-amber-400/90"
+																	: "bg-zinc-950 text-zinc-550 border border-zinc-850"
+															}`}
+														>
+															{skill.level === "Advanced" ? "ADV" : "INT"}
+														</span>
+													</div>
 												))}
 											</div>
 										</div>
