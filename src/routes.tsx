@@ -15,6 +15,7 @@ const MoviesTopRated = lazy(() => import("./features/movies/TopRated"));
 const MoviesUpcoming = lazy(() => import("./features/movies/Upcoming"));
 const MovieDetail = lazy(() => import("./features/movies/Detail"));
 const Todo = lazy(() => import("./features/todo/Todo"));
+const NotFound = lazy(() => import("./features/auth/NotFound"));
 
 function RootLayout() {
 	return (
@@ -101,6 +102,10 @@ export const router = createBrowserRouter([
 						element: <Login />,
 					},
 				],
+			},
+			{
+				path: "*",
+				element: <NotFound />,
 			},
 		],
 	},
