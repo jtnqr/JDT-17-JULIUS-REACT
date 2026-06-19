@@ -172,7 +172,7 @@ const MovieDetail = () => {
 	return (
 		<>
 			{/* Backdrop Hero section */}
-			<section className="relative w-full h-[50vh] min-h-100 md:h-[60vh] bg-zinc-950 overflow-hidden flex items-end">
+			<section className="relative w-full h-[65vh] min-h-100 md:h-[60vh] bg-zinc-950 overflow-hidden flex items-end">
 				{/* Backdrop Image */}
 				{movie.backdrop_path ? (
 					<div className="absolute inset-0 z-0">
@@ -498,7 +498,7 @@ const MovieDetail = () => {
 						</div>
 					</div>
 
-					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+					<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
 						{recommendations.map((recMovie) => (
 							<MovieCard key={recMovie.id} movie={recMovie} />
 						))}

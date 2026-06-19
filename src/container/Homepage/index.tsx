@@ -114,7 +114,7 @@ export default function Home() {
 			<div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-175 h-112.5 bg-linear-to-tr from-amber-500/10 to-orange-500/5 blur-[140px] rounded-full pointer-events-none" />
 
 			{/* Navigation Header */}
-			<header className="sticky top-0 z-50 w-full border-b border-zinc-900/60 bg-zinc-950/80 backdrop-blur-md">
+			<header className="sticky top-0 z-50 w-full border-b border-zinc-900/60 bg-zinc-950">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
 					{/* Logo */}
 					<div className="flex items-center gap-3">
@@ -126,7 +126,7 @@ export default function Home() {
 						<Button
 							onClick={() => setIsDropdownOpen(!isDropdownOpen)}
 							variant="ghost"
-							className="text-zinc-400 hover:text-zinc-50 hover:bg-zinc-900/40 p-2 rounded-xl flex items-center gap-2 cursor-pointer focus:outline-hidden"
+							className="text-zinc-400 hover:text-zinc-50 hover:bg-zinc-900/40 h-9 md:h-8 px-3 md:px-2.5 rounded-xl flex items-center gap-2 cursor-pointer focus:outline-hidden"
 						>
 							<span className="hidden sm:inline text-xs font-semibold">{user.username}</span>
 							<div className="h-8 w-8 rounded-xl bg-zinc-800 border border-zinc-700 overflow-hidden flex items-center justify-center">

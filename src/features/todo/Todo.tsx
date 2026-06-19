@@ -60,12 +60,12 @@ export default function Todo() {
 	return (
 		<div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col relative overflow-hidden">
 			{/* Top thin bar for Back to Hub navigation */}
-			<div className="w-full bg-zinc-950/80 border-b border-zinc-900/40 py-2 relative z-20">
+			<div className="w-full bg-zinc-950 border-b border-zinc-900/40 py-2 relative z-20">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-start">
 					<Button
 						asChild
 						variant="ghost"
-						className="text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900 group gap-1.5 rounded-xl text-xs font-semibold px-2.5 py-1.5 cursor-pointer"
+						className="text-zinc-455 hover:text-zinc-100 hover:bg-zinc-900 group gap-1.5 rounded-xl text-xs font-semibold h-9 md:h-8 px-3 md:px-2.5 flex items-center cursor-pointer"
 					>
 						<Link to="/">
 							<svg
@@ -84,7 +84,7 @@ export default function Todo() {
 				</div>
 			</div>
 
-			<div className="flex-1 flex flex-col items-center justify-center px-4 py-12 relative z-10">
+			<div className="flex-1 flex flex-col items-center justify-start sm:justify-center px-4 py-8 sm:py-12 relative z-10">
 				{/* Color radial glow backdrop */}
 				<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-137.5 h-137.5 bg-linear-to-tr from-amber-500/10 to-orange-500/5 blur-[120px] rounded-full pointer-events-none" />
 
@@ -161,7 +161,7 @@ export default function Todo() {
 									filteredTodos.map((todo) => (
 										<div
 											key={todo.id}
-											className={`flex items-center justify-between p-3.5 rounded-xl border transition-all duration-300 ${
+											className={`flex items-center justify-between p-3.5 rounded-xl border transition-all duration-300 group ${
 												todo.isCompleted
 													? "bg-zinc-950/20 border-zinc-900/60 opacity-60"
 													: "bg-zinc-900/20 border-zinc-850 hover:border-zinc-800/80"
@@ -172,7 +172,7 @@ export default function Todo() {
 													type="checkbox"
 													checked={todo.isCompleted}
 													onChange={() => dispatch(toggleTodo(todo.id))}
-													className="h-4.5 w-4.5 rounded-md border-zinc-800 text-amber-500 focus:ring-amber-500/30 bg-zinc-950 cursor-pointer"
+													className="h-5 w-5 md:h-4.5 md:w-4.5 rounded-md border-zinc-800 text-amber-500 focus:ring-amber-500/30 bg-zinc-950 cursor-pointer shrink-0"
 												/>
 
 												{editingId === todo.id ? (
@@ -207,7 +207,7 @@ export default function Todo() {
 														<button
 															type="button"
 															onClick={() => handleSaveEdit(todo.id)}
-															className="p-1 text-emerald-500 hover:bg-emerald-500/10 rounded-lg transition-colors cursor-pointer"
+															className="p-2 md:p-1 text-emerald-500 hover:bg-emerald-500/10 rounded-lg transition-colors cursor-pointer"
 															aria-label="Save changes"
 														>
 															<svg
@@ -228,7 +228,7 @@ export default function Todo() {
 														<button
 															type="button"
 															onClick={handleCancelEdit}
-															className="p-1 text-zinc-400 hover:bg-zinc-800 rounded-lg transition-colors cursor-pointer"
+															className="p-2 md:p-1 text-zinc-400 hover:bg-zinc-800 rounded-lg transition-colors cursor-pointer"
 															aria-label="Cancel editing"
 														>
 															<svg
@@ -252,7 +252,7 @@ export default function Todo() {
 														<button
 															type="button"
 															onClick={() => handleStartEdit(todo)}
-															className="p-1.5 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 rounded-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 hover:opacity-100 cursor-pointer"
+															className="p-2 md:p-1.5 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 rounded-lg transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100 hover:opacity-100 cursor-pointer"
 															aria-label="Edit task"
 														>
 															<svg
@@ -273,7 +273,7 @@ export default function Todo() {
 														<button
 															type="button"
 															onClick={() => dispatch(deleteTodo(todo.id))}
-															className="p-1.5 text-zinc-500 hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all cursor-pointer"
+															className="p-2 md:p-1.5 text-zinc-500 hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all cursor-pointer"
 															aria-label="Delete task"
 														>
 															<svg
