@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Outlet, ScrollRestoration } from "react-router";
 import Home from "./container/Homepage";
 import About from "./features/auth/About";
 import Login from "./features/auth/Login";
@@ -12,59 +12,73 @@ import MoviesUpcoming from "./features/movies/Upcoming";
 import Todo from "./features/todo/Todo";
 import ProtectedRoute, { AuthRoute } from "./routes/protectedRoutes";
 
+function RootLayout() {
+	return (
+		<>
+			<ScrollRestoration />
+			<Outlet />
+		</>
+	);
+}
+
 export const router = createBrowserRouter([
 	{
-		element: <ProtectedRoute />,
+		element: <RootLayout />,
 		children: [
 			{
-				path: "/",
-				element: <Home />,
-			},
-			{
-				element: <MovieLayout />,
+				element: <ProtectedRoute />,
 				children: [
 					{
-						path: "/movies",
-						element: <Movies />,
+						path: "/",
+						element: <Home />,
 					},
 					{
-						path: "/movies/search",
-						element: <MoviesSearch />,
+						element: <MovieLayout />,
+						children: [
+							{
+								path: "/movies",
+								element: <Movies />,
+							},
+							{
+								path: "/movies/search",
+								element: <MoviesSearch />,
+							},
+							{
+								path: "/movies/top-rated",
+								element: <MoviesTopRated />,
+							},
+							{
+								path: "/movies/upcoming",
+								element: <MoviesUpcoming />,
+							},
+							{
+								path: "/movies/:id",
+								element: <MovieDetail />,
+							},
+						],
 					},
 					{
-						path: "/movies/top-rated",
-						element: <MoviesTopRated />,
+						path: "/about",
+						element: <About />,
 					},
 					{
-						path: "/movies/upcoming",
-						element: <MoviesUpcoming />,
+						path: "/todo",
+						element: <Todo />,
 					},
 					{
-						path: "/movies/:id",
-						element: <MovieDetail />,
+						path: "/cv-page",
+						element: <CV />,
 					},
 				],
 			},
 			{
-				path: "/about",
-				element: <About />,
-			},
-			{
-				path: "/todo",
-				element: <Todo />,
-			},
-			{
-				path: "/cv-page",
-				element: <CV />,
-			},
-		],
-	},
-	{
-		element: <AuthRoute />,
-		children: [
-			{
-				path: "/login",
-				element: <Login />,
+				element: <AuthRoute />,
+				children: [
+					{
+						path: "/login",
+						element: <Login />,
+					},
+				],
 			},
 		],
 	},
