@@ -3,21 +3,21 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import MovieCard from "./components/MovieCard";
 import Pagination from "./components/Pagination";
-import { useGetTopRatedMoviesQuery } from "./moviesApi";
+import { useGetNowPlayingMoviesQuery } from "./moviesApi";
 
-export default function TopRated() {
+export default function NowPlaying() {
 	const [page, setPage] = useState(1);
-	const { data, isLoading, isFetching, error } = useGetTopRatedMoviesQuery(page);
+	const { data, isLoading, isFetching, error } = useGetNowPlayingMoviesQuery(page);
 
 	useEffect(() => {
-		document.title = "Top Rated Movies | JDT-17 Page";
+		document.title = "Now Playing Movies | JDT-17 Page";
 	}, []);
 
-	const topRatedMovies = data?.results || [];
+	const nowPlayingMovies = data?.results || [];
 
 	const handlePageChange = (newPage: number) => {
 		setPage(newPage);
-		const element = document.getElementById("top-rated");
+		const element = document.getElementById("now-playing");
 		if (element) {
 			element.scrollIntoView({ behavior: "smooth" });
 		} else {
@@ -35,7 +35,7 @@ export default function TopRated() {
 	}
 
 	return (
-		<div id="top-rated" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-left">
+		<div id="now-playing" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-left">
 			{/* Directory Header */}
 			<div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-zinc-900 pb-6">
 				<div>
@@ -43,7 +43,7 @@ export default function TopRated() {
 						Movie Directory
 					</h2>
 					<h3 className="text-3xl font-bold tracking-tight text-zinc-50 sm:text-4xl">
-						Top Rated Movies
+						Now Playing in Theaters
 					</h3>
 				</div>
 
@@ -52,7 +52,7 @@ export default function TopRated() {
 						variant="secondary"
 						className="px-3 py-1 h-7 rounded-full text-sm font-semibold border-zinc-800 text-amber-400 bg-amber-500/10 shrink-0"
 					>
-						{isLoading || isFetching ? "Loading..." : `${topRatedMovies.length} Movies`}
+						{isLoading || isFetching ? "Loading..." : `${nowPlayingMovies.length} Movies`}
 					</Badge>
 				</div>
 			</div>
@@ -86,7 +86,7 @@ export default function TopRated() {
 					</CardTitle>
 					<CardDescription className="text-destructive/80 text-sm">{errorMessage}</CardDescription>
 				</Card>
-			) : topRatedMovies.length === 0 ? (
+			) : nowPlayingMovies.length === 0 ? (
 				<Card className="border-dashed border-zinc-800 bg-zinc-950 p-16 text-center max-w-md mx-auto rounded-2xl flex flex-col items-center justify-center">
 					<div className="h-12 w-12 rounded-full bg-zinc-900/80 flex items-center justify-center text-zinc-500 mb-4 border border-zinc-800">
 						<svg
@@ -114,7 +114,7 @@ export default function TopRated() {
 			) : (
 				<>
 					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-						{topRatedMovies.map((movie) => (
+						{nowPlayingMovies.map((movie) => (
 							<MovieCard key={movie.id} movie={movie} />
 						))}
 					</div>

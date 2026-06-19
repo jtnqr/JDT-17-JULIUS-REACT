@@ -1,28 +1,34 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import HomeFeatures from "../../components/Homepage/HomeFeatures";
-import HomeHero from "../../components/Homepage/HomeHero";
-import HomeTrending from "../../components/Homepage/HomeTrending";
 import MovieCard from "./components/MovieCard";
-import MovieNavigation from "./components/MovieNavigation";
 import Pagination from "./components/Pagination";
-import { useGetNowPlayingMoviesQuery } from "./moviesApi";
+import { useGetPopularMoviesQuery } from "./moviesApi";
 
 const Movies = () => {
 	const [page, setPage] = useState(1);
-	// Fetch defaults with current page
-	const { data, isLoading, isFetching, error } = useGetNowPlayingMoviesQuery(page);
+	const [searchQuery, setSearchQuery] = useState("");
+	const navigate = useNavigate();
 
-	const nowPlayingMovies = data?.results || [];
+	const { data, isLoading, isFetching, error } = useGetPopularMoviesQuery(page);
+
+	const popularMovies = data?.results || [];
 
 	const handlePageChange = (newPage: number) => {
 		setPage(newPage);
-		const element = document.getElementById("now-playing");
+		const element = document.getElementById("popular-heading");
 		if (element) {
 			element.scrollIntoView({ behavior: "smooth" });
 		} else {
 			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
+	};
+
+	const handleSearchSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		if (searchQuery.trim()) {
+			navigate(`/movies/search?q=${encodeURIComponent(searchQuery.trim())}`);
 		}
 	};
 
@@ -36,30 +42,47 @@ const Movies = () => {
 	}
 
 	return (
-		<>
-			{/* Home Hero Section */}
-			<HomeHero />
+		<div className="w-full">
+			{/* Sleek Search Header */}
+			<section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 text-center">
+				<div className="absolute inset-0 -z-10 bg-linear-to-b from-amber-500/5 to-transparent blur-3xl rounded-full" />
+				<h1 className="text-3xl sm:text-5xl font-black text-zinc-50 tracking-tight mb-6 leading-tight">
+					Find your next favorite movie.
+				</h1>
+				<form onSubmit={handleSearchSubmit} className="max-w-2xl mx-auto relative">
+					<input
+						type="text"
+						placeholder="Search for movies, actors, or genres..."
+						value={searchQuery}
+						onChange={(e) => setSearchQuery(e.target.value)}
+						className="w-full pl-6 pr-24 py-4 bg-zinc-900/40 border border-zinc-800/80 focus:border-amber-500/60 rounded-2xl text-base text-zinc-150 placeholder-zinc-500 focus:outline-hidden transition-all duration-300 shadow-inner"
+					/>
+					<button
+						type="submit"
+						className="absolute right-2 top-1/2 -translate-y-1/2 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-6 py-2.5 rounded-xl text-sm transition-colors duration-200 cursor-pointer"
+					>
+						Search
+					</button>
+				</form>
+			</section>
 
-			{/* Home Trending spotlight section */}
-			<HomeTrending />
-
-			{/* Home Features section */}
-			<HomeFeatures />
-
-			{/* Movies Grid (Directory / Search Results) */}
-			<section id="now-playing" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 text-left">
-				<div className="border-t border-zinc-800/80 pt-16">
-					{/* Movie Navigation Tabs */}
-					<MovieNavigation />
-
-					{/* Directory Header */}
-					<div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-zinc-900 pb-6">
+			{/* Popular Movies Section */}
+			<section
+				id="popular-section"
+				className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 text-left"
+			>
+				<div className="border-t border-zinc-800/80 pt-10">
+					{/* Header */}
+					<div
+						id="popular-heading"
+						className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-zinc-900 pb-6"
+					>
 						<div>
 							<h2 className="text-xs font-bold tracking-widest text-amber-500 uppercase mb-3">
 								Movie Directory
 							</h2>
 							<h3 className="text-3xl font-bold tracking-tight text-zinc-50 sm:text-4xl">
-								Now Playing in Theaters
+								Popular Movies Right Now
 							</h3>
 						</div>
 
@@ -68,7 +91,7 @@ const Movies = () => {
 								variant="secondary"
 								className="px-3 py-1 h-7 rounded-full text-sm font-semibold border-zinc-800 text-amber-400 bg-amber-500/10 shrink-0"
 							>
-								{isLoading || isFetching ? "Loading..." : `${nowPlayingMovies.length} Movies`}
+								{isLoading || isFetching ? "Loading..." : `${popularMovies.length} Movies`}
 							</Badge>
 						</div>
 					</div>
@@ -104,7 +127,7 @@ const Movies = () => {
 								{errorMessage}
 							</CardDescription>
 						</Card>
-					) : nowPlayingMovies.length === 0 ? (
+					) : popularMovies.length === 0 ? (
 						<Card className="border-dashed border-zinc-800 bg-zinc-950 p-16 text-center max-w-md mx-auto rounded-2xl flex flex-col items-center justify-center">
 							<div className="h-12 w-12 rounded-full bg-zinc-900/80 flex items-center justify-center text-zinc-500 mb-4 border border-zinc-800">
 								<svg
@@ -134,7 +157,7 @@ const Movies = () => {
 					) : (
 						<>
 							<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-								{nowPlayingMovies.map((movie) => (
+								{popularMovies.map((movie) => (
 									<MovieCard key={movie.id} movie={movie} />
 								))}
 							</div>
@@ -148,7 +171,7 @@ const Movies = () => {
 					)}
 				</div>
 			</section>
-		</>
+		</div>
 	);
 };
 

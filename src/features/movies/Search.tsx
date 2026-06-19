@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import MovieCard from "./components/MovieCard";
-import MovieNavigation from "./components/MovieNavigation";
 import Pagination from "./components/Pagination";
 import { useSearchMoviesQuery } from "./moviesApi";
 
 export default function Search() {
-	const [searchQuery, setSearchQuery] = useState("");
-	const [debouncedQuery, setDebouncedQuery] = useState("");
+	const [searchParams, setSearchParams] = useSearchParams();
+	const initialQuery = searchParams.get("q") || "";
+
+	const [searchQuery, setSearchQuery] = useState(initialQuery);
+	const [debouncedQuery, setDebouncedQuery] = useState(initialQuery);
 	const [page, setPage] = useState(1);
 
 	const { data, isFetching, isError, error } = useSearchMoviesQuery(
@@ -16,12 +19,30 @@ export default function Search() {
 		{ skip: !debouncedQuery.trim() },
 	);
 
+	// Synchronize state when URL query params change
+	useEffect(() => {
+		const q = searchParams.get("q") || "";
+		if (q !== searchQuery) {
+			setSearchQuery(q);
+			setDebouncedQuery(q);
+		}
+	}, [searchParams, searchQuery]);
+
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			setDebouncedQuery(searchQuery);
 		}, 400);
 		return () => clearTimeout(timer);
 	}, [searchQuery]);
+
+	// Update URL search query on debounced search changes
+	useEffect(() => {
+		if (debouncedQuery.trim()) {
+			setSearchParams({ q: debouncedQuery }, { replace: true });
+		} else {
+			setSearchParams({}, { replace: true });
+		}
+	}, [debouncedQuery, setSearchParams]);
 
 	// Reset page to 1 when search query changes
 	// biome-ignore lint/correctness/useExhaustiveDependencies: reset page when query changes
@@ -63,8 +84,6 @@ export default function Search() {
 			id="search-results-section"
 			className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-left"
 		>
-			<MovieNavigation />
-
 			{/* Directory Header with Search */}
 			<div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-zinc-900 pb-6">
 				<div>

@@ -6,6 +6,7 @@ import CV from "./features/cv/CV";
 import MovieLayout from "./features/movies/components/MovieLayout";
 import MovieDetail from "./features/movies/Detail";
 import Movies from "./features/movies/Movies";
+import NowPlaying from "./features/movies/NowPlaying";
 import MoviesSearch from "./features/movies/Search";
 import MoviesTopRated from "./features/movies/TopRated";
 import MoviesUpcoming from "./features/movies/Upcoming";
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
 							{
 								path: "/movies",
 								element: <Movies />,
+							},
+							{
+								path: "/movies/now-playing",
+								element: <NowPlaying />,
 							},
 							{
 								path: "/movies/search",
