@@ -94,7 +94,7 @@ export default function MovieLayout() {
 					<Button
 						asChild
 						variant="ghost"
-						className="text-zinc-455 hover:text-zinc-100 hover:bg-zinc-900 group gap-1.5 rounded-xl text-xs font-semibold px-2.5 py-1.5 cursor-pointer"
+						className="text-zinc-455 hover:text-zinc-100 hover:bg-zinc-900 group gap-1.5 rounded-xl text-xs font-semibold h-9 md:h-8 px-3 md:px-2.5 flex items-center cursor-pointer"
 					>
 						<Link to="/">
 							<svg
@@ -116,7 +116,7 @@ export default function MovieLayout() {
 						<Button
 							onClick={() => setIsDropdownOpen(!isDropdownOpen)}
 							variant="ghost"
-							className="text-zinc-400 hover:text-zinc-50 hover:bg-zinc-900/40 px-2.5 py-1.5 rounded-xl flex items-center gap-2 cursor-pointer focus:outline-hidden text-xs font-semibold"
+							className="text-zinc-400 hover:text-zinc-50 hover:bg-zinc-900/40 h-9 md:h-8 px-3 md:px-2.5 rounded-xl flex items-center gap-2 cursor-pointer focus:outline-hidden text-xs font-semibold"
 						>
 							<span className="hidden sm:inline text-xs font-semibold">{user.username}</span>
 							<div className="h-6 w-6 rounded-lg bg-zinc-800 border border-zinc-700 overflow-hidden flex items-center justify-center">
@@ -231,7 +231,7 @@ export default function MovieLayout() {
 								to="/movies"
 								end
 								className={({ isActive }) =>
-									`text-xs sm:text-sm font-bold transition-colors duration-200 whitespace-nowrap shrink-0 ${
+									`text-xs sm:text-sm font-bold py-2 transition-colors duration-200 whitespace-nowrap shrink-0 ${
 										isActive ? "text-amber-500" : "text-zinc-450 hover:text-zinc-100"
 									}`
 								}
@@ -241,7 +241,7 @@ export default function MovieLayout() {
 							<NavLink
 								to="/movies/now-playing"
 								className={({ isActive }) =>
-									`text-xs sm:text-sm font-bold transition-colors duration-200 whitespace-nowrap shrink-0 ${
+									`text-xs sm:text-sm font-bold py-2 transition-colors duration-200 whitespace-nowrap shrink-0 ${
 										isActive ? "text-amber-500" : "text-zinc-450 hover:text-zinc-100"
 									}`
 								}
@@ -251,7 +251,7 @@ export default function MovieLayout() {
 							<NavLink
 								to="/movies/top-rated"
 								className={({ isActive }) =>
-									`text-xs sm:text-sm font-bold transition-colors duration-200 whitespace-nowrap shrink-0 ${
+									`text-xs sm:text-sm font-bold py-2 transition-colors duration-200 whitespace-nowrap shrink-0 ${
 										isActive ? "text-amber-500" : "text-zinc-450 hover:text-zinc-100"
 									}`
 								}
@@ -261,7 +261,7 @@ export default function MovieLayout() {
 							<NavLink
 								to="/movies/upcoming"
 								className={({ isActive }) =>
-									`text-xs sm:text-sm font-bold transition-colors duration-200 whitespace-nowrap shrink-0 ${
+									`text-xs sm:text-sm font-bold py-2 transition-colors duration-200 whitespace-nowrap shrink-0 ${
 										isActive ? "text-amber-500" : "text-zinc-450 hover:text-zinc-100"
 									}`
 								}

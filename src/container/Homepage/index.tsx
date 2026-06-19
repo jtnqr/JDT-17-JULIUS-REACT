@@ -126,7 +126,7 @@ export default function Home() {
 						<Button
 							onClick={() => setIsDropdownOpen(!isDropdownOpen)}
 							variant="ghost"
-							className="text-zinc-400 hover:text-zinc-50 hover:bg-zinc-900/40 p-2 rounded-xl flex items-center gap-2 cursor-pointer focus:outline-hidden"
+							className="text-zinc-400 hover:text-zinc-50 hover:bg-zinc-900/40 h-9 md:h-8 px-3 md:px-2.5 rounded-xl flex items-center gap-2 cursor-pointer focus:outline-hidden"
 						>
 							<span className="hidden sm:inline text-xs font-semibold">{user.username}</span>
 							<div className="h-8 w-8 rounded-xl bg-zinc-800 border border-zinc-700 overflow-hidden flex items-center justify-center">

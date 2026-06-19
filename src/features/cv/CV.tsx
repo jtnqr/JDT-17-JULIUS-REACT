@@ -240,7 +240,7 @@ export default function CV() {
 					<Button
 						asChild
 						variant="ghost"
-						className="text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900 group gap-1.5 rounded-xl text-xs font-semibold px-2.5 py-1.5 cursor-pointer"
+						className="text-zinc-455 hover:text-zinc-100 hover:bg-zinc-900 group gap-1.5 rounded-xl text-xs font-semibold h-9 md:h-8 px-3 md:px-2.5 flex items-center cursor-pointer"
 					>
 						<Link to="/">
 							<svg
