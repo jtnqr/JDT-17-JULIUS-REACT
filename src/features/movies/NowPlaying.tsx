@@ -10,7 +10,7 @@ export default function NowPlaying() {
 	const { data, isLoading, isFetching, error } = useGetNowPlayingMoviesQuery(page);
 
 	useEffect(() => {
-		document.title = "Now Playing Movies | JDT-17 Page";
+		document.title = "Now Playing Movies | JDT-17";
 	}, []);
 
 	const nowPlayingMovies = data?.results || [];

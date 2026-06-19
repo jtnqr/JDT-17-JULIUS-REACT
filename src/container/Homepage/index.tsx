@@ -12,7 +12,7 @@ export default function Home() {
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		document.title = "Home | JDT-17 Page";
+		document.title = "Home | JDT-17";
 	}, []);
 
 	// Close dropdown when clicking outside

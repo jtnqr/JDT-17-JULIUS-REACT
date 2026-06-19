@@ -24,7 +24,7 @@ export default function Login() {
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
-		document.title = "Login | JDT-17 Page";
+		document.title = "Login | JDT-17";
 	}, []);
 
 	const handleSubmit = async (e: React.FormEvent) => {

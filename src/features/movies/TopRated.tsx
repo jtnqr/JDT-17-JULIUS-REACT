@@ -10,7 +10,7 @@ export default function TopRated() {
 	const { data, isLoading, isFetching, error } = useGetTopRatedMoviesQuery(page);
 
 	useEffect(() => {
-		document.title = "Top Rated Movies | JDT-17 Page";
+		document.title = "Top Rated Movies | JDT-17";
 	}, []);
 
 	const topRatedMovies = data?.results || [];

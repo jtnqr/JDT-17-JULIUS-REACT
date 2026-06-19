@@ -53,9 +53,9 @@ export default function Search() {
 
 	useEffect(() => {
 		if (debouncedQuery.trim()) {
-			document.title = `Search: "${debouncedQuery}" | JDT-17 Page`;
+			document.title = `Search: "${debouncedQuery}" | JDT-17`;
 		} else {
-			document.title = "Search Movies | JDT-17 Page";
+			document.title = "Search Movies | JDT-17";
 		}
 	}, [debouncedQuery]);
 

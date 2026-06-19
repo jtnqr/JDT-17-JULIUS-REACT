@@ -10,7 +10,7 @@ export default function About() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		document.title = "About | JDT-17 Page";
+		document.title = "About | JDT-17";
 
 		const hydrateProfile = async () => {
 			if (

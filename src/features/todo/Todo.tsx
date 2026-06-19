@@ -17,7 +17,7 @@ export default function Todo() {
 	const editInputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
-		document.title = "TO-DO | JDT-17 Page";
+		document.title = "TO-DO | JDT-17";
 	}, []);
 
 	useEffect(() => {

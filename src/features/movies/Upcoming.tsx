@@ -10,7 +10,7 @@ export default function Upcoming() {
 	const { data, isLoading, isFetching, error } = useGetUpcomingMoviesQuery(page);
 
 	useEffect(() => {
-		document.title = "Upcoming Movies | JDT-17 Page";
+		document.title = "Upcoming Movies | JDT-17";
 	}, []);
 
 	const upcomingMovies = data?.results || [];

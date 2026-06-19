@@ -58,7 +58,7 @@ const MovieDetail = () => {
 
 	useEffect(() => {
 		if (movie?.title) {
-			document.title = `${movie.title} | JDT-17 Page`;
+			document.title = `${movie.title} | JDT-17`;
 		}
 	}, [movie?.title]);
 

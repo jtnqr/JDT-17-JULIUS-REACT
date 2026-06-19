@@ -1,8 +1,13 @@
 import { ShieldAlert } from "lucide-react";
+import { useEffect } from "react";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
+	useEffect(() => {
+		document.title = "404 - Not Found | JDT-17";
+	}, []);
+
 	return (
 		<div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col items-center justify-center p-6 text-center">
 			<div className="absolute inset-0 -z-10 bg-linear-to-b from-amber-500/5 to-transparent blur-3xl rounded-full" />

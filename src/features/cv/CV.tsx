@@ -229,7 +229,7 @@ export default function CV() {
 	>("all");
 
 	useEffect(() => {
-		document.title = "Julius Wahyu Wicaksono | CV Page";
+		document.title = "Julius Wahyu Wicaksono | CV - JDT-17";
 	}, []);
 
 	return (
