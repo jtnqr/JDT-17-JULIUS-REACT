@@ -292,26 +292,28 @@ export default function MovieLayout() {
 					{/* Mobile Navigation Controls */}
 					<div className="flex sm:hidden items-center gap-1.5 shrink-0">
 						{/* Search Icon Link */}
-						<Link
-							to="/movies/search"
-							className="p-2 text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900 rounded-xl transition-colors cursor-pointer flex items-center justify-center h-9 w-9"
-							aria-label="Search movies"
-						>
-							<svg
-								className="h-5 w-5"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-								strokeWidth={2}
+						{location.pathname !== "/movies/search" && (
+							<Link
+								to="/movies/search"
+								className="p-2 text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900 rounded-xl transition-colors cursor-pointer flex items-center justify-center h-9 w-9"
+								aria-label="Search movies"
 							>
-								<title>Search Icon</title>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-								/>
-							</svg>
-						</Link>
+								<svg
+									className="h-5 w-5"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									strokeWidth={2}
+								>
+									<title>Search Icon</title>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+									/>
+								</svg>
+							</Link>
+						)}
 
 						{/* Hamburger Menu Toggle Button */}
 						<Button
@@ -347,7 +349,7 @@ export default function MovieLayout() {
 					</div>
 
 					{/* Navbar Search Input (hidden on popular page except when scrolled down, Desktop only) */}
-					{(!isPopularPage || showSearchOnScroll) && (
+					{location.pathname !== "/movies/search" && (!isPopularPage || showSearchOnScroll) && (
 						<form
 							onSubmit={handleNavSearchSubmit}
 							className="hidden sm:block relative w-full max-w-[160px] sm:max-w-[240px] animate-in fade-in slide-in-from-right-3 duration-250 shrink-0"
