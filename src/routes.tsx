@@ -3,6 +3,7 @@ import Home from "./container/Homepage";
 import About from "./features/auth/About";
 import Login from "./features/auth/Login";
 import CV from "./features/cv/CV";
+import MovieLayout from "./features/movies/components/MovieLayout";
 import MovieDetail from "./features/movies/Detail";
 import Movies from "./features/movies/Movies";
 import MoviesSearch from "./features/movies/Search";
@@ -20,24 +21,29 @@ export const router = createBrowserRouter([
 				element: <Home />,
 			},
 			{
-				path: "/movies",
-				element: <Movies />,
-			},
-			{
-				path: "/movies/search",
-				element: <MoviesSearch />,
-			},
-			{
-				path: "/movies/top-rated",
-				element: <MoviesTopRated />,
-			},
-			{
-				path: "/movies/upcoming",
-				element: <MoviesUpcoming />,
-			},
-			{
-				path: "/movies/:id",
-				element: <MovieDetail />,
+				element: <MovieLayout />,
+				children: [
+					{
+						path: "/movies",
+						element: <Movies />,
+					},
+					{
+						path: "/movies/search",
+						element: <MoviesSearch />,
+					},
+					{
+						path: "/movies/top-rated",
+						element: <MoviesTopRated />,
+					},
+					{
+						path: "/movies/upcoming",
+						element: <MoviesUpcoming />,
+					},
+					{
+						path: "/movies/:id",
+						element: <MovieDetail />,
+					},
+				],
 			},
 			{
 				path: "/about",
