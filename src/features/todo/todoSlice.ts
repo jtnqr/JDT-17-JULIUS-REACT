@@ -10,13 +10,39 @@ interface TodoState {
 	items: TodoItem[];
 }
 
+// Obfuscate todos to avoid storing plain text in localStorage
+export const encodeTodos = (todos: TodoItem[]): string => {
+	try {
+		return btoa(encodeURIComponent(JSON.stringify(todos)));
+	} catch (e) {
+		console.error("Failed to encode todos:", e);
+		return "";
+	}
+};
+
+export const decodeTodos = (encoded: string): TodoItem[] => {
+	try {
+		return JSON.parse(decodeURIComponent(atob(encoded)));
+	} catch (e) {
+		console.error("Failed to decode todos:", e);
+		return [];
+	}
+};
+
 const getInitialState = (): TodoState => {
 	const saved = localStorage.getItem("jdt17_todos");
 	if (!saved) {
 		return { items: [] };
 	}
 	try {
-		return { items: JSON.parse(saved) };
+		// Keep backward compatibility for non-obfuscated items
+		if (saved.startsWith("[")) {
+			const parsed = JSON.parse(saved);
+			// Save in new format
+			localStorage.setItem("jdt17_todos", encodeTodos(parsed));
+			return { items: parsed };
+		}
+		return { items: decodeTodos(saved) };
 	} catch (err) {
 		console.error("Failed to parse todos from localStorage:", err);
 		localStorage.removeItem("jdt17_todos");

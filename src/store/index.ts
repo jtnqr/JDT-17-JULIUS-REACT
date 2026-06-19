@@ -1,7 +1,7 @@
 import { configureStore, type Middleware } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
 import { moviesApi } from "../features/movies/moviesApi";
-import todoReducer from "../features/todo/todoSlice";
+import todoReducer, { encodeTodos } from "../features/todo/todoSlice";
 
 const localStorageMiddleware: Middleware = (storeApi) => (next) => (action) => {
 	const result = next(action);
@@ -10,7 +10,7 @@ const localStorageMiddleware: Middleware = (storeApi) => (next) => (action) => {
 		const actionType = action.type;
 		if (typeof actionType === "string" && actionType.startsWith("todo/")) {
 			const state = storeApi.getState() as RootState;
-			localStorage.setItem("jdt17_todos", JSON.stringify(state.todo.items));
+			localStorage.setItem("jdt17_todos", encodeTodos(state.todo.items));
 		}
 	}
 

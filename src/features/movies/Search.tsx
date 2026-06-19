@@ -19,14 +19,15 @@ export default function Search() {
 		{ skip: !debouncedQuery.trim() },
 	);
 
-	// Synchronize state when URL query params change
+	// Synchronize state when URL query params change (e.g. on load or nav back)
+	// biome-ignore lint/correctness/useExhaustiveDependencies: only sync when searchParams change to prevent typing lock
 	useEffect(() => {
 		const q = searchParams.get("q") || "";
 		if (q !== searchQuery) {
 			setSearchQuery(q);
 			setDebouncedQuery(q);
 		}
-	}, [searchParams, searchQuery]);
+	}, [searchParams]);
 
 	useEffect(() => {
 		const timer = setTimeout(() => {
@@ -150,7 +151,7 @@ export default function Search() {
 							variant="secondary"
 							className="px-3 py-1 h-7 rounded-full text-sm font-semibold border-zinc-800 text-amber-400 bg-amber-500/10 shrink-0"
 						>
-							{isFetching ? "Loading..." : `${searchResults.length} Matches`}
+							{isFetching ? "Loading..." : `${data?.total_results || 0} Matches`}
 						</Badge>
 					)}
 				</div>

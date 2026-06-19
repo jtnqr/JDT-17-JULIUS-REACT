@@ -34,30 +34,31 @@ export const router = createBrowserRouter([
 						element: <Home />,
 					},
 					{
+						path: "/movies",
 						element: <MovieLayout />,
 						children: [
 							{
-								path: "/movies",
+								index: true,
 								element: <Movies />,
 							},
 							{
-								path: "/movies/now-playing",
+								path: "now-playing",
 								element: <NowPlaying />,
 							},
 							{
-								path: "/movies/search",
+								path: "search",
 								element: <MoviesSearch />,
 							},
 							{
-								path: "/movies/top-rated",
+								path: "top-rated",
 								element: <MoviesTopRated />,
 							},
 							{
-								path: "/movies/upcoming",
+								path: "upcoming",
 								element: <MoviesUpcoming />,
 							},
 							{
-								path: "/movies/:id",
+								path: ":id",
 								element: <MovieDetail />,
 							},
 						],

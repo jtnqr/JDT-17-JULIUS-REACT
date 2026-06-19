@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,9 +8,24 @@ import { useToken } from "../../features/auth/useToken";
 export default function Home() {
 	const { user, logout } = useToken();
 	const navigate = useNavigate();
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+	const dropdownRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		document.title = "Home | JDT-17 Page";
+	}, []);
+
+	// Close dropdown when clicking outside
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+				setIsDropdownOpen(false);
+			}
+		};
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
 	}, []);
 
 	const handleLogout = () => {
@@ -50,7 +65,7 @@ export default function Home() {
 			title: "Professional CV",
 			description: "Explore my interactive resume, experience, skills, and work credentials.",
 			path: "/cv-page",
-			badge: "Placeholder",
+			badge: "Interactive CV",
 			icon: (
 				<svg
 					className="w-8 h-8 text-amber-500"
@@ -69,11 +84,11 @@ export default function Home() {
 			),
 		},
 		{
-			title: "Task Manager",
+			title: "TO-DO",
 			description:
 				"Manage your daily schedules and todos with interactive JSON API synchronization.",
 			path: "/todo",
-			badge: "Placeholder",
+			badge: "Redux + Storage",
 			icon: (
 				<svg
 					className="w-8 h-8 text-amber-500"
@@ -82,33 +97,11 @@ export default function Home() {
 					stroke="currentColor"
 					strokeWidth={2}
 				>
-					<title>Task Manager Icon</title>
+					<title>TO-DO Icon</title>
 					<path
 						strokeLinecap="round"
 						strokeLinejoin="round"
 						d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-					/>
-				</svg>
-			),
-		},
-		{
-			title: "About Profile",
-			description: "View logged-in user credentials, email, password, and session details.",
-			path: "/about",
-			badge: "Credentials",
-			icon: (
-				<svg
-					className="w-8 h-8 text-amber-500"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-					strokeWidth={2}
-				>
-					<title>About Profile Icon</title>
-					<path
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
 					/>
 				</svg>
 			),
@@ -128,40 +121,98 @@ export default function Home() {
 						<span className="font-bold text-lg tracking-tight text-zinc-50">JDT-17 Hub</span>
 					</div>
 
-					{/* Profile Avatar / Quick Nav */}
-					<div className="flex items-center gap-4">
+					{/* Profile Avatar Dropdown Menu */}
+					<div className="relative" ref={dropdownRef}>
 						<Button
-							asChild
+							onClick={() => setIsDropdownOpen(!isDropdownOpen)}
 							variant="ghost"
-							className="text-zinc-400 hover:text-zinc-50 hover:bg-zinc-900/40 p-2 rounded-xl"
+							className="text-zinc-400 hover:text-zinc-50 hover:bg-zinc-900/40 p-2 rounded-xl flex items-center gap-2 cursor-pointer focus:outline-hidden"
 						>
-							<Link to="/about" aria-label="View user profile">
-								<div className="flex items-center gap-2">
-									<span className="hidden sm:inline text-xs font-semibold">{user.username}</span>
-									<div className="h-8 w-8 rounded-xl bg-zinc-800 border border-zinc-700 overflow-hidden flex items-center justify-center">
-										{user.image ? (
-											<img
-												src={user.image}
-												alt={user.username}
-												className="h-full w-full object-cover"
-											/>
-										) : (
-											<span className="text-zinc-300 font-bold text-xs">
-												{user.username[0].toUpperCase()}
-											</span>
-										)}
-									</div>
-								</div>
-							</Link>
+							<span className="hidden sm:inline text-xs font-semibold">{user.username}</span>
+							<div className="h-8 w-8 rounded-xl bg-zinc-800 border border-zinc-700 overflow-hidden flex items-center justify-center">
+								{user.image ? (
+									<img
+										src={user.image}
+										alt={user.username}
+										className="h-full w-full object-cover"
+									/>
+								) : (
+									<span className="text-zinc-300 font-bold text-xs">
+										{user.username[0].toUpperCase()}
+									</span>
+								)}
+							</div>
+							<svg
+								className={`w-3.5 h-3.5 text-zinc-500 transition-transform duration-200 ${
+									isDropdownOpen ? "rotate-180 text-zinc-300" : ""
+								}`}
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								strokeWidth={2.5}
+							>
+								<title>Dropdown Arrow</title>
+								<path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+							</svg>
 						</Button>
 
-						<Button
-							onClick={handleLogout}
-							variant="ghost"
-							className="text-zinc-400 hover:text-destructive hover:bg-destructive/10 px-3 py-1.5 text-xs font-bold rounded-xl cursor-pointer"
-						>
-							Log Out
-						</Button>
+						{isDropdownOpen && (
+							<div className="absolute right-0 mt-2 w-48 rounded-2xl bg-zinc-900 border border-zinc-800 shadow-2xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+								<Button
+									asChild
+									variant="ghost"
+									onClick={() => setIsDropdownOpen(false)}
+									className="w-full text-left justify-start text-zinc-300 hover:text-zinc-50 hover:bg-zinc-800/60 px-3 py-2 rounded-xl text-xs font-semibold"
+								>
+									<Link to="/about" className="flex items-center gap-2">
+										<svg
+											className="w-4 h-4 text-amber-500"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+											strokeWidth={2}
+										>
+											<title>Profile Icon</title>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+											/>
+										</svg>
+										About Profile
+									</Link>
+								</Button>
+
+								<div className="h-px bg-zinc-800/80 my-1" />
+
+								<Button
+									onClick={() => {
+										setIsDropdownOpen(false);
+										handleLogout();
+									}}
+									variant="ghost"
+									className="w-full text-left justify-start text-zinc-400 hover:text-destructive hover:bg-destructive/10 px-3 py-2 rounded-xl text-xs font-bold cursor-pointer"
+								>
+									<span className="flex items-center gap-2">
+										<svg
+											className="w-4 h-4 text-destructive"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+											strokeWidth={2}
+										>
+											<title>Logout Icon</title>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 01-3-3h4a3 3 0 013 3v1"
+											/>
+										</svg>
+										Log Out
+									</span>
+								</Button>
+							</div>
+						)}
 					</div>
 				</div>
 			</header>
@@ -181,7 +232,7 @@ export default function Home() {
 					</p>
 				</div>
 
-				<div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto w-full">
+				<div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto w-full">
 					{hubItems.map((item) => (
 						<Link to={item.path} key={item.path} className="group">
 							<Card className="h-full border border-zinc-800 bg-zinc-900/20 hover:bg-zinc-900/50 hover:border-amber-500/25 rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/2 flex flex-col justify-between">
@@ -192,7 +243,7 @@ export default function Home() {
 										</div>
 										<Badge
 											variant="outline"
-											className="border-zinc-800 text-zinc-500 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5"
+											className="border-zinc-800 text-zinc-550 text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5"
 										>
 											{item.badge}
 										</Badge>
