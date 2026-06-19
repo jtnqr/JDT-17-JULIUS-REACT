@@ -19,16 +19,20 @@ export const moviesApi = createApi({
 		},
 	}),
 	endpoints: (builder) => ({
-		getPopularMovies: builder.query<MovieResponse, number>({
+		// biome-ignore lint/suspicious/noConfusingVoidType: specified by task requirements
+		getPopularMovies: builder.query<MovieResponse, number | void>({
 			query: (page = 1) => `movie/popular?page=${page}`,
 		}),
-		getNowPlayingMovies: builder.query<MovieResponse, number>({
+		// biome-ignore lint/suspicious/noConfusingVoidType: specified by task requirements
+		getNowPlayingMovies: builder.query<MovieResponse, number | void>({
 			query: (page = 1) => `movie/now_playing?page=${page}`,
 		}),
-		getTopRatedMovies: builder.query<MovieResponse, number>({
+		// biome-ignore lint/suspicious/noConfusingVoidType: specified by task requirements
+		getTopRatedMovies: builder.query<MovieResponse, number | void>({
 			query: (page = 1) => `movie/top_rated?page=${page}`,
 		}),
-		getUpcomingMovies: builder.query<MovieResponse, number>({
+		// biome-ignore lint/suspicious/noConfusingVoidType: specified by task requirements
+		getUpcomingMovies: builder.query<MovieResponse, number | void>({
 			query: (page = 1) => `movie/upcoming?page=${page}`,
 		}),
 		searchMovies: builder.query<MovieResponse, { query: string; page?: number }>({
@@ -49,6 +53,9 @@ export const moviesApi = createApi({
 		}),
 		getSimilarMovies: builder.query<MovieResponse, { id: string | number; page?: number }>({
 			query: ({ id, page = 1 }) => `movie/${id}/similar?page=${page}`,
+		}),
+		getMovieRecommendations: builder.query<MovieResponse, { id: string | number; page?: number }>({
+			query: ({ id, page = 1 }) => `movie/${id}/recommendations?page=${page}`,
 		}),
 	}),
 });
@@ -74,4 +81,6 @@ export const {
 	useLazyGetMovieReviewsQuery,
 	useGetSimilarMoviesQuery,
 	useLazyGetSimilarMoviesQuery,
+	useGetMovieRecommendationsQuery,
+	useLazyGetMovieRecommendationsQuery,
 } = moviesApi;

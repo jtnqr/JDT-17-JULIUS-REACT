@@ -5,6 +5,9 @@ import Login from "./features/auth/Login";
 import CV from "./features/cv/CV";
 import MovieDetail from "./features/movies/Detail";
 import Movies from "./features/movies/Movies";
+import MoviesSearch from "./features/movies/Search";
+import MoviesTopRated from "./features/movies/TopRated";
+import MoviesUpcoming from "./features/movies/Upcoming";
 import Todo from "./features/todo/Todo";
 import ProtectedRoute, { AuthRoute } from "./routes/protectedRoutes";
 
@@ -19,6 +22,18 @@ export const router = createBrowserRouter([
 			{
 				path: "/movies",
 				element: <Movies />,
+			},
+			{
+				path: "/movies/search",
+				element: <MoviesSearch />,
+			},
+			{
+				path: "/movies/top-rated",
+				element: <MoviesTopRated />,
+			},
+			{
+				path: "/movies/upcoming",
+				element: <MoviesUpcoming />,
 			},
 			{
 				path: "/movies/:id",

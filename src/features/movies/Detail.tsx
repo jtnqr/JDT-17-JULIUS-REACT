@@ -1,12 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToken } from "../auth/useToken";
-import { getMovieCredits, getMovieDetails, getMovieRecommendations, getMovieVideos } from "./api";
 import MovieCard from "./components/MovieCard";
-import type { CastMember, Movie, MovieDetails as MovieDetailsType, MovieVideo } from "./type";
+import {
+	useGetMovieCreditsQuery,
+	useGetMovieDetailsQuery,
+	useGetMovieRecommendationsQuery,
+	useGetMovieVideosQuery,
+} from "./moviesApi";
 
 const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
 const TMDB_BACKDROP_BASE = "https://image.tmdb.org/t/p/original";
@@ -17,72 +21,49 @@ const MovieDetail = () => {
 	const { user, logout } = useToken();
 	const navigate = useNavigate();
 
-	const [movie, setMovie] = useState<MovieDetailsType | null>(null);
-	const [cast, setCast] = useState<CastMember[]>([]);
-	const [trailer, setTrailer] = useState<MovieVideo | null>(null);
-	const [recommendations, setRecommendations] = useState<Movie[]>([]);
-
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
-
 	const trailerRef = useRef<HTMLDivElement>(null);
 
+	const {
+		data: movie,
+		isLoading: isDetailsLoading,
+		error: detailsError,
+	} = useGetMovieDetailsQuery(id || "", { skip: !id });
+
+	const {
+		data: credits,
+		isLoading: isCreditsLoading,
+		error: creditsError,
+	} = useGetMovieCreditsQuery(id || "", { skip: !id });
+
+	const {
+		data: videosData,
+		isLoading: isVideosLoading,
+		error: videosError,
+	} = useGetMovieVideosQuery(id || "", { skip: !id });
+
+	const {
+		data: recommendationsData,
+		isLoading: isRecsLoading,
+		error: recsError,
+	} = useGetMovieRecommendationsQuery({ id: id || "" }, { skip: !id });
+
+	const isLoading = isDetailsLoading || isCreditsLoading || isVideosLoading || isRecsLoading;
+	const firstError = detailsError || creditsError || videosError || recsError;
+
+	let errorMessage = "";
+	if (firstError) {
+		if ("status" in firstError) {
+			errorMessage = `Error: ${firstError.status} ${JSON.stringify(firstError.data)}`;
+		} else {
+			errorMessage = firstError.message || "An unexpected error occurred";
+		}
+	}
+
 	useEffect(() => {
-		if (!id) return;
-
-		let isMounted = true;
-		const fetchAllDetails = async () => {
-			try {
-				setIsLoading(true);
-				setError(null);
-
-				// Perform requests in parallel for better performance
-				const [detailsRes, creditsRes, videosRes, recommendationsRes] = await Promise.all([
-					getMovieDetails(id),
-					getMovieCredits(id),
-					getMovieVideos(id),
-					getMovieRecommendations(id),
-				]);
-
-				if (isMounted) {
-					setMovie(detailsRes.data);
-					setCast((creditsRes.data.cast || []).slice(0, 6)); // Top 6 cast members
-
-					// Find official trailer or first YouTube trailer/teaser
-					const videos = videosRes.data.results || [];
-					const officialTrailer = videos.find(
-						(v) => v.site === "YouTube" && v.type === "Trailer" && v.official,
-					);
-					const fallbackTrailer = videos.find(
-						(v) => v.site === "YouTube" && (v.type === "Trailer" || v.type === "Teaser"),
-					);
-					setTrailer(officialTrailer || fallbackTrailer || null);
-
-					setRecommendations((recommendationsRes.data.results || []).slice(0, 4));
-
-					// Update document title dynamically
-					if (detailsRes.data?.title) {
-						document.title = `${detailsRes.data.title} | JDT-17 Page`;
-					}
-				}
-			} catch (err) {
-				if (isMounted) {
-					const errMsg = err instanceof Error ? err.message : "Failed to load movie details";
-					setError(errMsg);
-				}
-			} finally {
-				if (isMounted) {
-					setIsLoading(false);
-				}
-			}
-		};
-
-		fetchAllDetails();
-
-		return () => {
-			isMounted = false;
-		};
-	}, [id]);
+		if (movie?.title) {
+			document.title = `${movie.title} | JDT-17 Page`;
+		}
+	}, [movie?.title]);
 
 	const handleLogout = () => {
 		logout();
@@ -110,6 +91,19 @@ const MovieDetail = () => {
 	};
 
 	if (!user) return null;
+
+	const cast = (credits?.cast || []).slice(0, 6);
+
+	const videos = videosData?.results || [];
+	const officialTrailer = videos.find(
+		(v) => v.site === "YouTube" && v.type === "Trailer" && v.official,
+	);
+	const fallbackTrailer = videos.find(
+		(v) => v.site === "YouTube" && (v.type === "Trailer" || v.type === "Teaser"),
+	);
+	const trailer = officialTrailer || fallbackTrailer || null;
+
+	const recommendations = (recommendationsData?.results || []).slice(0, 4);
 
 	if (isLoading) {
 		return (
@@ -155,7 +149,7 @@ const MovieDetail = () => {
 		);
 	}
 
-	if (error || !movie) {
+	if (firstError || !movie) {
 		return (
 			<div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-between">
 				<header className="sticky top-0 z-50 w-full border-b border-zinc-900/60 bg-zinc-950/80 backdrop-blur-md">
@@ -186,7 +180,7 @@ const MovieDetail = () => {
 						</div>
 						<h2 className="text-xl font-bold">Failed to Load Movie</h2>
 						<p className="text-zinc-400 text-sm">
-							{error || "The movie details could not be found."}
+							{errorMessage || "The movie details could not be found."}
 						</p>
 						<Button
 							asChild
