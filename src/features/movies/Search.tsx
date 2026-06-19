@@ -159,7 +159,7 @@ export default function Search() {
 
 			{/* Directory Listing States */}
 			{isFetching ? (
-				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+				<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
 					{[1, 2, 3, 4, 5, 6, 7, 8].map((key) => (
 						<div
 							key={key}
@@ -234,7 +234,7 @@ export default function Search() {
 				</Card>
 			) : (
 				<>
-					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+					<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
 						{searchResults.map((movie) => (
 							<MovieCard key={movie.id} movie={movie} />
 						))}

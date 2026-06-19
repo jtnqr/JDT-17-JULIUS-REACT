@@ -66,21 +66,21 @@ const MovieCard = ({ movie }: MovieCardProps) => {
 				</div>
 
 				{/* Details Section */}
-				<div className="flex flex-1 flex-col p-4 bg-zinc-900/40">
-					<div className="flex items-start justify-between gap-2 mb-2">
-						<h3 className="font-bold text-base text-zinc-100 line-clamp-1 group-hover:text-amber-400 transition-colors duration-300">
+				<div className="flex flex-1 flex-col p-3 sm:p-4 bg-zinc-900/40">
+					<div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-2 mb-2">
+						<h3 className="font-bold text-sm sm:text-base text-zinc-100 line-clamp-1 group-hover:text-amber-400 transition-colors duration-300">
 							{movie.title}
 						</h3>
 						{releaseYear !== null ? (
 							<Badge
 								variant="outline"
-								className="border-zinc-800 text-zinc-500 text-[10px] uppercase font-semibold tracking-wider shrink-0 h-5 px-1.5 rounded"
+								className="border-zinc-800 text-zinc-500 text-[10px] uppercase font-semibold tracking-wider shrink-0 h-5 px-1.5 rounded w-fit"
 							>
 								{releaseYear}
 							</Badge>
 						) : null}
 					</div>
-					<p className="text-xs text-zinc-400 line-clamp-3 leading-relaxed">
+					<p className="text-xs text-zinc-400 line-clamp-3 leading-relaxed hidden sm:block">
 						{movie.overview || "No overview available."}
 					</p>
 				</div>
