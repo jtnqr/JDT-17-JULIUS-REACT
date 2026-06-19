@@ -3,14 +3,16 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import MovieCard from "./components/MovieCard";
 import MovieNavigation from "./components/MovieNavigation";
+import Pagination from "./components/Pagination";
 import { useSearchMoviesQuery } from "./moviesApi";
 
 export default function Search() {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [debouncedQuery, setDebouncedQuery] = useState("");
+	const [page, setPage] = useState(1);
 
 	const { data, isFetching, isError, error } = useSearchMoviesQuery(
-		{ query: debouncedQuery },
+		{ query: debouncedQuery, page },
 		{ skip: !debouncedQuery.trim() },
 	);
 
@@ -20,6 +22,12 @@ export default function Search() {
 		}, 400);
 		return () => clearTimeout(timer);
 	}, [searchQuery]);
+
+	// Reset page to 1 when search query changes
+	// biome-ignore lint/correctness/useExhaustiveDependencies: reset page when query changes
+	useEffect(() => {
+		setPage(1);
+	}, [debouncedQuery]);
 
 	useEffect(() => {
 		if (debouncedQuery.trim()) {
@@ -31,6 +39,16 @@ export default function Search() {
 
 	const searchResults = data?.results || [];
 
+	const handlePageChange = (newPage: number) => {
+		setPage(newPage);
+		const element = document.getElementById("search-results-section");
+		if (element) {
+			element.scrollIntoView({ behavior: "smooth" });
+		} else {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
+	};
+
 	let errorMessage = "";
 	if (error) {
 		if ("status" in error) {
@@ -41,7 +59,10 @@ export default function Search() {
 	}
 
 	return (
-		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-left">
+		<div
+			id="search-results-section"
+			className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-left"
+		>
 			<MovieNavigation />
 
 			{/* Directory Header with Search */}
@@ -192,11 +213,19 @@ export default function Search() {
 					</CardDescription>
 				</Card>
 			) : (
-				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-					{searchResults.map((movie) => (
-						<MovieCard key={movie.id} movie={movie} />
-					))}
-				</div>
+				<>
+					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+						{searchResults.map((movie) => (
+							<MovieCard key={movie.id} movie={movie} />
+						))}
+					</div>
+
+					<Pagination
+						currentPage={page}
+						totalPages={data?.total_pages || 1}
+						onPageChange={handlePageChange}
+					/>
+				</>
 			)}
 		</div>
 	);

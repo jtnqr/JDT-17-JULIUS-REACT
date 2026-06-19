@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import HomeFeatures from "../../components/Homepage/HomeFeatures";
@@ -5,13 +6,25 @@ import HomeHero from "../../components/Homepage/HomeHero";
 import HomeTrending from "../../components/Homepage/HomeTrending";
 import MovieCard from "./components/MovieCard";
 import MovieNavigation from "./components/MovieNavigation";
+import Pagination from "./components/Pagination";
 import { useGetNowPlayingMoviesQuery } from "./moviesApi";
 
 const Movies = () => {
-	// Fetch defaults
-	const { data, isLoading, error } = useGetNowPlayingMoviesQuery();
+	const [page, setPage] = useState(1);
+	// Fetch defaults with current page
+	const { data, isLoading, isFetching, error } = useGetNowPlayingMoviesQuery(page);
 
 	const nowPlayingMovies = data?.results || [];
+
+	const handlePageChange = (newPage: number) => {
+		setPage(newPage);
+		const element = document.getElementById("now-playing");
+		if (element) {
+			element.scrollIntoView({ behavior: "smooth" });
+		} else {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
+	};
 
 	let errorMessage = "";
 	if (error) {
@@ -55,13 +68,13 @@ const Movies = () => {
 								variant="secondary"
 								className="px-3 py-1 h-7 rounded-full text-sm font-semibold border-zinc-800 text-amber-400 bg-amber-500/10 shrink-0"
 							>
-								{isLoading ? "Loading..." : `${nowPlayingMovies.length} Movies`}
+								{isLoading || isFetching ? "Loading..." : `${nowPlayingMovies.length} Movies`}
 							</Badge>
 						</div>
 					</div>
 
 					{/* Directory Listing States */}
-					{isLoading ? (
+					{isLoading || isFetching ? (
 						<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 							{[1, 2, 3, 4, 5, 6, 7, 8].map((key) => (
 								<div
@@ -119,11 +132,19 @@ const Movies = () => {
 							</CardDescription>
 						</Card>
 					) : (
-						<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-							{nowPlayingMovies.map((movie) => (
-								<MovieCard key={movie.id} movie={movie} />
-							))}
-						</div>
+						<>
+							<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+								{nowPlayingMovies.map((movie) => (
+									<MovieCard key={movie.id} movie={movie} />
+								))}
+							</div>
+
+							<Pagination
+								currentPage={page}
+								totalPages={data?.total_pages || 1}
+								onPageChange={handlePageChange}
+							/>
+						</>
 					)}
 				</div>
 			</section>

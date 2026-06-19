@@ -1,18 +1,30 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import MovieCard from "./components/MovieCard";
 import MovieNavigation from "./components/MovieNavigation";
+import Pagination from "./components/Pagination";
 import { useGetTopRatedMoviesQuery } from "./moviesApi";
 
 export default function TopRated() {
-	const { data, isLoading, error } = useGetTopRatedMoviesQuery();
+	const [page, setPage] = useState(1);
+	const { data, isLoading, isFetching, error } = useGetTopRatedMoviesQuery(page);
 
 	useEffect(() => {
 		document.title = "Top Rated Movies | JDT-17 Page";
 	}, []);
 
 	const topRatedMovies = data?.results || [];
+
+	const handlePageChange = (newPage: number) => {
+		setPage(newPage);
+		const element = document.getElementById("top-rated");
+		if (element) {
+			element.scrollIntoView({ behavior: "smooth" });
+		} else {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
+	};
 
 	let errorMessage = "";
 	if (error) {
@@ -24,7 +36,7 @@ export default function TopRated() {
 	}
 
 	return (
-		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-left">
+		<div id="top-rated" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-left">
 			<MovieNavigation />
 
 			{/* Directory Header */}
@@ -43,13 +55,13 @@ export default function TopRated() {
 						variant="secondary"
 						className="px-3 py-1 h-7 rounded-full text-sm font-semibold border-zinc-800 text-amber-400 bg-amber-500/10 shrink-0"
 					>
-						{isLoading ? "Loading..." : `${topRatedMovies.length} Movies`}
+						{isLoading || isFetching ? "Loading..." : `${topRatedMovies.length} Movies`}
 					</Badge>
 				</div>
 			</div>
 
 			{/* Directory Listing States */}
-			{isLoading ? (
+			{isLoading || isFetching ? (
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 					{[1, 2, 3, 4, 5, 6, 7, 8].map((key) => (
 						<div
@@ -103,11 +115,19 @@ export default function TopRated() {
 					</CardDescription>
 				</Card>
 			) : (
-				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-					{topRatedMovies.map((movie) => (
-						<MovieCard key={movie.id} movie={movie} />
-					))}
-				</div>
+				<>
+					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+						{topRatedMovies.map((movie) => (
+							<MovieCard key={movie.id} movie={movie} />
+						))}
+					</div>
+
+					<Pagination
+						currentPage={page}
+						totalPages={data?.total_pages || 1}
+						onPageChange={handlePageChange}
+					/>
+				</>
 			)}
 		</div>
 	);
