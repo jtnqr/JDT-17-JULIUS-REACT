@@ -84,7 +84,7 @@ export default function Todo() {
 				</div>
 			</div>
 
-			<div className="flex-1 flex flex-col items-center justify-center px-4 py-12 relative z-10">
+			<div className="flex-1 flex flex-col items-center justify-start sm:justify-center px-4 py-8 sm:py-12 relative z-10">
 				{/* Color radial glow backdrop */}
 				<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-137.5 h-137.5 bg-linear-to-tr from-amber-500/10 to-orange-500/5 blur-[120px] rounded-full pointer-events-none" />
 

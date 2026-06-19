@@ -287,6 +287,7 @@ export default function MovieLayout() {
 								stroke="currentColor"
 								strokeWidth={2}
 							>
+								<title>Search Icon</title>
 								<path
 									strokeLinecap="round"
 									strokeLinejoin="round"
@@ -310,6 +311,7 @@ export default function MovieLayout() {
 									stroke="currentColor"
 									strokeWidth={2.5}
 								>
+									<title>Close Menu</title>
 									<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
 								</svg>
 							) : (
@@ -320,6 +322,7 @@ export default function MovieLayout() {
 									stroke="currentColor"
 									strokeWidth={2.5}
 								>
+									<title>Open Menu</title>
 									<path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
 								</svg>
 							)}
@@ -385,7 +388,9 @@ export default function MovieLayout() {
 							onClick={() => setIsMobileMenuOpen(false)}
 							className={({ isActive }) =>
 								`text-xs font-bold py-2.5 px-3 rounded-lg transition-colors duration-200 ${
-									isActive ? "text-amber-500 bg-zinc-900/50" : "text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900/20"
+									isActive
+										? "text-amber-500 bg-zinc-900/50"
+										: "text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900/20"
 								}`
 							}
 						>
@@ -396,7 +401,9 @@ export default function MovieLayout() {
 							onClick={() => setIsMobileMenuOpen(false)}
 							className={({ isActive }) =>
 								`text-xs font-bold py-2.5 px-3 rounded-lg transition-colors duration-200 ${
-									isActive ? "text-amber-500 bg-zinc-900/50" : "text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900/20"
+									isActive
+										? "text-amber-500 bg-zinc-900/50"
+										: "text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900/20"
 								}`
 							}
 						>
@@ -407,7 +414,9 @@ export default function MovieLayout() {
 							onClick={() => setIsMobileMenuOpen(false)}
 							className={({ isActive }) =>
 								`text-xs font-bold py-2.5 px-3 rounded-lg transition-colors duration-200 ${
-									isActive ? "text-amber-500 bg-zinc-900/50" : "text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900/20"
+									isActive
+										? "text-amber-500 bg-zinc-900/50"
+										: "text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900/20"
 								}`
 							}
 						>
@@ -418,7 +427,9 @@ export default function MovieLayout() {
 							onClick={() => setIsMobileMenuOpen(false)}
 							className={({ isActive }) =>
 								`text-xs font-bold py-2.5 px-3 rounded-lg transition-colors duration-200 ${
-									isActive ? "text-amber-500 bg-zinc-900/50" : "text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900/20"
+									isActive
+										? "text-amber-500 bg-zinc-900/50"
+										: "text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900/20"
 								}`
 							}
 						>
