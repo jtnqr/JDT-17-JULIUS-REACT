@@ -28,10 +28,18 @@ interface AuthState {
 const getInitialState = (): AuthState => {
 	const token = localStorage.getItem("token");
 	const userStr = localStorage.getItem("user");
-	return {
-		token,
-		user: userStr ? JSON.parse(userStr) : null,
-	};
+	try {
+		return {
+			token,
+			user: userStr ? JSON.parse(userStr) : null,
+		};
+	} catch {
+		localStorage.clear();
+		return {
+			token: null,
+			user: null,
+		};
+	}
 };
 
 const authSlice = createSlice({
@@ -41,14 +49,10 @@ const authSlice = createSlice({
 		loginSuccess: (state, action: PayloadAction<{ token: string; user: User }>) => {
 			state.token = action.payload.token;
 			state.user = action.payload.user;
-			localStorage.setItem("token", action.payload.token);
-			localStorage.setItem("user", JSON.stringify(action.payload.user));
 		},
 		logoutSuccess: (state) => {
 			state.token = null;
 			state.user = null;
-			localStorage.removeItem("token");
-			localStorage.removeItem("user");
 		},
 	},
 });
