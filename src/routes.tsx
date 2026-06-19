@@ -1,23 +1,39 @@
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, Outlet, ScrollRestoration } from "react-router";
-import Home from "./container/Homepage";
-import About from "./features/auth/About";
-import Login from "./features/auth/Login";
-import CV from "./features/cv/CV";
-import MovieLayout from "./features/movies/components/MovieLayout";
-import MovieDetail from "./features/movies/Detail";
-import Movies from "./features/movies/Movies";
-import NowPlaying from "./features/movies/NowPlaying";
-import MoviesSearch from "./features/movies/Search";
-import MoviesTopRated from "./features/movies/TopRated";
-import MoviesUpcoming from "./features/movies/Upcoming";
-import Todo from "./features/todo/Todo";
 import ProtectedRoute, { AuthRoute } from "./routes/protectedRoutes";
+
+// Lazy-loaded components for optimal bundle splitting
+const Home = lazy(() => import("./container/Homepage"));
+const About = lazy(() => import("./features/auth/About"));
+const Login = lazy(() => import("./features/auth/Login"));
+const CV = lazy(() => import("./features/cv/CV"));
+const MovieLayout = lazy(() => import("./features/movies/components/MovieLayout"));
+const Movies = lazy(() => import("./features/movies/Movies"));
+const NowPlaying = lazy(() => import("./features/movies/NowPlaying"));
+const MoviesSearch = lazy(() => import("./features/movies/Search"));
+const MoviesTopRated = lazy(() => import("./features/movies/TopRated"));
+const MoviesUpcoming = lazy(() => import("./features/movies/Upcoming"));
+const MovieDetail = lazy(() => import("./features/movies/Detail"));
+const Todo = lazy(() => import("./features/todo/Todo"));
 
 function RootLayout() {
 	return (
 		<>
 			<ScrollRestoration />
-			<Outlet />
+			<Suspense
+				fallback={
+					<div className="min-h-screen bg-zinc-950 flex items-center justify-center text-zinc-400">
+						<div className="flex flex-col items-center gap-3">
+							<div className="h-6 w-6 rounded-full border-2 border-amber-500 border-t-transparent animate-spin" />
+							<span className="text-xs font-medium tracking-wider uppercase text-zinc-500">
+								Loading...
+							</span>
+						</div>
+					</div>
+				}
+			>
+				<Outlet />
+			</Suspense>
 		</>
 	);
 }
