@@ -90,7 +90,7 @@ export default function MovieLayout() {
 	return (
 		<div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-between">
 			{/* Top thin bar for Back to Hub navigation & Profile */}
-			<div className="w-full bg-zinc-950/80 border-b border-zinc-900/40 py-2 relative z-60">
+			<div className="w-full bg-zinc-950 border-b border-zinc-900/40 py-2 relative z-60">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
 					<Button
 						asChild
@@ -209,7 +209,7 @@ export default function MovieLayout() {
 			</div>
 
 			{/* Header Navigation */}
-			<header className="sticky top-0 z-50 w-full border-b border-zinc-900/60 bg-zinc-950/80 backdrop-blur-md">
+			<header className="sticky top-0 z-50 w-full border-b border-zinc-900/60 bg-zinc-950">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
 					{/* Logo & Links */}
 					<div className="flex items-center gap-6 sm:gap-8 overflow-hidden">

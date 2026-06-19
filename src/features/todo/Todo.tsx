@@ -60,7 +60,7 @@ export default function Todo() {
 	return (
 		<div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col relative overflow-hidden">
 			{/* Top thin bar for Back to Hub navigation */}
-			<div className="w-full bg-zinc-950/80 border-b border-zinc-900/40 py-2 relative z-20">
+			<div className="w-full bg-zinc-950 border-b border-zinc-900/40 py-2 relative z-20">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-start">
 					<Button
 						asChild

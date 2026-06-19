@@ -114,7 +114,7 @@ export default function Home() {
 			<div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-175 h-112.5 bg-linear-to-tr from-amber-500/10 to-orange-500/5 blur-[140px] rounded-full pointer-events-none" />
 
 			{/* Navigation Header */}
-			<header className="sticky top-0 z-50 w-full border-b border-zinc-900/60 bg-zinc-950/80 backdrop-blur-md">
+			<header className="sticky top-0 z-50 w-full border-b border-zinc-900/60 bg-zinc-950">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
 					{/* Logo */}
 					<div className="flex items-center gap-3">
