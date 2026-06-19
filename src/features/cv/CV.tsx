@@ -2,7 +2,7 @@ import {
 	Code2,
 	Cpu,
 	Database,
-	Github,
+	GitBranch,
 	Key,
 	Server,
 	Shield,
@@ -73,7 +73,7 @@ const SKILL_SLUGS: Record<string, string> = {
 const getSkillIcon = (skill: Skill) => {
 	// 1. Check for specific Lucide icons first (where a clear, high-quality match exists)
 	if (skill.name === "Git & GitHub") {
-		return <Github className="h-3.5 w-3.5 text-zinc-300 shrink-0" />;
+		return <GitBranch className="h-3.5 w-3.5 text-zinc-300 shrink-0" />;
 	}
 	if (skill.name === "Bash") {
 		return <Terminal className="h-3.5 w-3.5 text-zinc-300 shrink-0" />;
