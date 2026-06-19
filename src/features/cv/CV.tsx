@@ -134,7 +134,6 @@ const PROJECTS: Project[] = [
 ];
 
 export default function CV() {
-	const [activeTab, setActiveTab] = useState<"experience" | "skills" | "projects">("experience");
 	const [skillFilter, setSkillFilter] = useState<
 		"all" | "languages" | "frameworks" | "databases" | "devops"
 	>("all");
@@ -279,353 +278,331 @@ export default function CV() {
 						</div>
 					</header>
 
-					{/* Navigation Tabs */}
-					<nav
-						aria-label="CV section navigation"
-						className="flex border-b border-zinc-900 mb-8 gap-6 overflow-x-auto pb-1"
-					>
-						{(["experience", "skills", "projects"] as const).map((tab) => (
-							<button
-								key={tab}
-								type="button"
-								onClick={() => setActiveTab(tab)}
-								className={`pb-3 text-sm font-bold transition-all shrink-0 border-b-2 capitalize cursor-pointer ${
-									activeTab === tab
-										? "border-amber-500 text-amber-500"
-										: "border-transparent text-zinc-400 hover:text-zinc-150"
-								}`}
-							>
-								{tab === "experience" ? "Experience & Education" : tab}
-							</button>
-						))}
-					</nav>
-
 					{/* Content Sections */}
-					<main className="text-left">
+					<main className="text-left space-y-16">
 						{/* Experience & Education Section */}
-						{activeTab === "experience" && (
-							<div className="space-y-12">
-								{/* Experience Timeline */}
-								<div>
-									<h2 className="text-lg font-extrabold text-zinc-50 mb-6 flex items-center gap-2">
-										<span className="h-2 w-2 rounded-full bg-amber-500" /> Work Experience
-									</h2>
+						<section id="experience" className="space-y-12">
+							{/* Experience Timeline */}
+							<div>
+								<h2 className="text-lg font-extrabold text-zinc-50 mb-6 flex items-center gap-2">
+									<span className="h-2 w-2 rounded-full bg-amber-500" /> Work Experience
+								</h2>
 
-									<div className="relative border-l border-zinc-850 pl-6 space-y-10 ml-1">
-										{/* Item 1 */}
-										<div className="relative">
-											<div className="absolute -left-[31px] top-1.5 h-4 w-4 rounded-full border border-amber-500 bg-zinc-950" />
-											<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-												<div>
-													<h3 className="font-bold text-zinc-50 text-base">Asisten Laboratorium</h3>
-													<p className="text-zinc-400 text-sm">
-														Laboratorium Informatika Universitas Gunadarma · Paruh Waktu
-													</p>
-												</div>
-												<Badge
-													variant="outline"
-													className="border-zinc-800 text-amber-500 shrink-0 self-start sm:self-auto px-2.5 py-0.5"
-												>
-													Mar 2024 - Mei 2025
-												</Badge>
-											</div>
-											<ul className="list-disc list-outside ml-4 text-zinc-400 text-sm space-y-2 leading-relaxed">
-												<li>
-													<strong className="text-zinc-350">Teaching & Mentoring:</strong> Mengajar
-													algoritma & logika pemrograman (
-													<strong className="text-zinc-300">Python & Golang</strong>) kepada 30+
-													mahasiswa, memperkuat pemahaman fundamental struktur data.
-												</li>
-												<li>
-													<strong className="text-zinc-350">Curriculum Development:</strong>{" "}
-													Merancang modul praktikum terstandarisasi yang relevan dengan kebutuhan
-													industri saat ini, termasuk penerapan
-													<em className="text-zinc-300"> clean code</em>.
-												</li>
-												<li>
-													<strong className="text-zinc-350">Technical Troubleshooting:</strong>{" "}
-													Mendiagnosa dan memecahkan masalah teknis lingkungan pengembangan secara{" "}
-													<em className="text-zinc-300">real-time</em> demi kelancaran operasional.
-												</li>
-											</ul>
-										</div>
-
-										{/* Item 2 */}
-										<div className="relative">
-											<div className="absolute -left-[31px] top-1.5 h-4 w-4 rounded-full border border-zinc-800 bg-zinc-950" />
-											<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-												<div>
-													<h3 className="font-bold text-zinc-50 text-base">
-														Full-stack Web Developer
-													</h3>
-													<p className="text-zinc-400 text-sm">
-														SMK Negeri 1 Kota Bekasi · Magang/PKL
-													</p>
-												</div>
-												<Badge
-													variant="outline"
-													className="border-zinc-800 text-zinc-550 shrink-0 self-start sm:self-auto px-2.5 py-0.5"
-												>
-													Okt 2020 - Mar 2021
-												</Badge>
-											</div>
-											<ul className="list-disc list-outside ml-4 text-zinc-400 text-sm space-y-2 leading-relaxed">
-												<li>
-													<strong className="text-zinc-350">Full-Cycle Development:</strong>{" "}
-													Bertanggung jawab penuh atas siklus pengembangan aplikasi mulai dari
-													perancangan sistem, desain database, hingga implementasi fitur.
-												</li>
-												<li>
-													<strong className="text-zinc-350">Backend Engineering:</strong>{" "}
-													Mengembangkan logika sisi server yang aman menggunakan{" "}
-													<strong className="text-zinc-300">PHP dan MySQL</strong>, memastikan
-													integritas data untuk proses pemilihan digital.
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-
-								{/* Education Section */}
-								<div className="pt-6 border-t border-zinc-900">
-									<h2 className="text-lg font-extrabold text-zinc-50 mb-6 flex items-center gap-2">
-										<span className="h-2 w-2 rounded-full bg-amber-500" /> Education
-									</h2>
-
-									<div className="space-y-6">
-										<div className="flex justify-between items-start gap-4">
+								<div className="relative border-l border-zinc-850 pl-6 space-y-10 ml-1">
+									{/* Item 1 */}
+									<div className="relative">
+										<div className="absolute -left-[31px] top-1.5 h-4 w-4 rounded-full border border-amber-500 bg-zinc-950" />
+										<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
 											<div>
-												<h3 className="font-bold text-zinc-50 text-base">Universitas Gunadarma</h3>
-												<p className="text-zinc-400 text-sm">Teknik Informatika</p>
+												<h3 className="font-bold text-zinc-50 text-base">Asisten Laboratorium</h3>
+												<p className="text-zinc-400 text-sm">
+													Laboratorium Informatika Universitas Gunadarma · Paruh Waktu
+												</p>
 											</div>
 											<Badge
-												variant="secondary"
-												className="border-zinc-800 bg-zinc-900/50 text-zinc-350"
+												variant="outline"
+												className="border-zinc-800 text-amber-500 shrink-0 self-start sm:self-auto px-2.5 py-0.5"
 											>
-												2022 - Sekarang
+												Mar 2024 - Mei 2025
 											</Badge>
 										</div>
+										<ul className="list-disc list-outside ml-4 text-zinc-400 text-sm space-y-2 leading-relaxed">
+											<li>
+												<strong className="text-zinc-350">Teaching & Mentoring:</strong> Mengajar
+												algoritma & logika pemrograman (
+												<strong className="text-zinc-300">Python & Golang</strong>) kepada 30+
+												mahasiswa, memperkuat pemahaman fundamental struktur data.
+											</li>
+											<li>
+												<strong className="text-zinc-350">Curriculum Development:</strong> Merancang
+												modul praktikum terstandarisasi yang relevan dengan kebutuhan industri saat
+												ini, termasuk penerapan
+												<em className="text-zinc-300"> clean code</em>.
+											</li>
+											<li>
+												<strong className="text-zinc-350">Technical Troubleshooting:</strong>{" "}
+												Mendiagnosa dan memecahkan masalah teknis lingkungan pengembangan secara{" "}
+												<em className="text-zinc-300">real-time</em> demi kelancaran operasional.
+											</li>
+										</ul>
+									</div>
 
-										<div className="flex justify-between items-start gap-4">
+									{/* Item 2 */}
+									<div className="relative">
+										<div className="absolute -left-[31px] top-1.5 h-4 w-4 rounded-full border border-zinc-800 bg-zinc-950" />
+										<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
 											<div>
 												<h3 className="font-bold text-zinc-50 text-base">
-													SMK Negeri 1 Kota Bekasi
+													Full-stack Web Developer
 												</h3>
-												<p className="text-zinc-400 text-sm">Rekayasa Perangkat Lunak</p>
+												<p className="text-zinc-400 text-sm">
+													SMK Negeri 1 Kota Bekasi · Magang/PKL
+												</p>
 											</div>
 											<Badge
-												variant="secondary"
-												className="border-zinc-800 bg-zinc-900/50 text-zinc-400"
+												variant="outline"
+												className="border-zinc-800 text-zinc-550 shrink-0 self-start sm:self-auto px-2.5 py-0.5"
 											>
-												2019 - 2022
+												Okt 2020 - Mar 2021
 											</Badge>
 										</div>
+										<ul className="list-disc list-outside ml-4 text-zinc-400 text-sm space-y-2 leading-relaxed">
+											<li>
+												<strong className="text-zinc-350">Full-Cycle Development:</strong>{" "}
+												Bertanggung jawab penuh atas siklus pengembangan aplikasi mulai dari
+												perancangan sistem, desain database, hingga implementasi fitur.
+											</li>
+											<li>
+												<strong className="text-zinc-350">Backend Engineering:</strong>{" "}
+												Mengembangkan logika sisi server yang aman menggunakan{" "}
+												<strong className="text-zinc-300">PHP dan MySQL</strong>, memastikan
+												integritas data untuk proses pemilihan digital.
+											</li>
+										</ul>
 									</div>
 								</div>
 							</div>
-						)}
+
+							{/* Education Section */}
+							<div className="pt-6 border-t border-zinc-900">
+								<h2 className="text-lg font-extrabold text-zinc-50 mb-6 flex items-center gap-2">
+									<span className="h-2 w-2 rounded-full bg-amber-500" /> Education
+								</h2>
+
+								<div className="space-y-6">
+									<div className="flex justify-between items-start gap-4">
+										<div>
+											<h3 className="font-bold text-zinc-50 text-base">Universitas Gunadarma</h3>
+											<p className="text-zinc-400 text-sm">Teknik Informatika</p>
+										</div>
+										<Badge
+											variant="secondary"
+											className="border-zinc-800 bg-zinc-900/50 text-zinc-350"
+										>
+											2022 - Sekarang
+										</Badge>
+									</div>
+
+									<div className="flex justify-between items-start gap-4">
+										<div>
+											<h3 className="font-bold text-zinc-50 text-base">SMK Negeri 1 Kota Bekasi</h3>
+											<p className="text-zinc-400 text-sm">Rekayasa Perangkat Lunak</p>
+										</div>
+										<Badge
+											variant="secondary"
+											className="border-zinc-800 bg-zinc-900/50 text-zinc-400"
+										>
+											2019 - 2022
+										</Badge>
+									</div>
+								</div>
+							</div>
+						</section>
+
+						<div className="h-px bg-zinc-900 my-16" />
 
 						{/* Skills Section */}
-						{activeTab === "skills" && (
-							<div className="space-y-6">
-								{/* Skills Filtering */}
-								<div className="flex flex-wrap gap-1.5 py-1 border-b border-zinc-900 mb-6">
-									{(["all", "languages", "frameworks", "databases", "devops"] as const).map(
-										(filterOpt) => (
-											<button
-												key={filterOpt}
-												type="button"
-												onClick={() => setSkillFilter(filterOpt)}
-												className={`px-3.5 py-1.5 rounded-xl text-xs font-bold capitalize transition-all cursor-pointer ${
-													skillFilter === filterOpt
-														? "bg-amber-500 text-zinc-950 shadow-md shadow-amber-500/10"
-														: "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/40"
-												}`}
-											>
-												{filterOpt === "all"
-													? "All Skills"
-													: filterOpt === "devops"
-														? "DevOps & Tools"
-														: filterOpt}
-											</button>
-										),
-									)}
-								</div>{" "}
-								{/* Grouped Skills Grid */}
-								<div className="space-y-8">
-									{(
-										(skillFilter === "all"
-											? ["languages", "frameworks", "databases", "devops"]
-											: [skillFilter]) as Skill["category"][]
-									).map((categoryKey) => {
-										const categorySkills = SKILLS.filter((s) => s.category === categoryKey);
-										if (categorySkills.length === 0) return null;
-										return (
-											<div key={categoryKey} className="space-y-4">
-												<h3 className="text-xs font-bold uppercase tracking-wider text-amber-500 border-l-2 border-amber-500 pl-2">
-													{CATEGORY_NAMES[categoryKey]}
-												</h3>
-												<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-													{categorySkills.map((skill) => (
-														<Card
-															key={skill.name}
-															className="border border-zinc-850/60 bg-zinc-900/10 hover:border-amber-500/20 hover:bg-zinc-900/30 rounded-xl p-4 flex flex-col justify-between transition-all duration-300 hover:-translate-y-0.5"
-														>
-															<div className="flex items-center justify-between gap-2 mb-2">
-																<span className="text-sm font-bold text-zinc-150">
-																	{skill.name}
-																</span>
-																<span
-																	className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${
-																		skill.level === "Advanced"
-																			? "bg-amber-500/10 text-amber-400 border-amber-500/20"
-																			: "bg-zinc-800/40 text-zinc-400 border-zinc-800"
-																	}`}
-																>
-																	{skill.level}
-																</span>
-															</div>
-
-															<div className="w-full bg-zinc-950 h-1.5 rounded-full overflow-hidden mt-2">
-																<div
-																	className={`h-full rounded-full transition-all duration-500 ${
-																		skill.level === "Advanced"
-																			? "bg-gradient-to-r from-amber-500 to-orange-500 w-[90%]"
-																			: "bg-zinc-650 w-[60%]"
-																	}`}
-																/>
-															</div>
-														</Card>
-													))}
-												</div>
-											</div>
-										);
-									})}
-								</div>
-								{/* Certifications Box */}
-								<div className="pt-10 border-t border-zinc-900 mt-10">
-									<h2 className="text-lg font-extrabold text-zinc-50 mb-6 flex items-center gap-2">
-										<span className="h-2 w-2 rounded-full bg-amber-500" /> Certifications &
-										Credentials
-									</h2>
-
-									<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-										<Card className="border border-zinc-850/60 bg-zinc-950/20 p-5 rounded-2xl flex flex-col justify-between text-left">
-											<div>
-												<h3 className="font-bold text-zinc-50 text-sm mb-1">
-													Junior Mobile Programmer (VSGA)
-												</h3>
-												<p className="text-zinc-500 text-xs">Kementerian Kominfo RI</p>
-											</div>
-											<Badge
-												variant="outline"
-												className="mt-4 border-zinc-800 text-amber-500/90 py-0.5 px-2 self-start text-[10px]"
-											>
-												Credential ID: VSGA-Kominfo
-											</Badge>
-										</Card>
-
-										<Card className="border border-zinc-850/60 bg-zinc-950/20 p-5 rounded-2xl flex flex-col justify-between text-left">
-											<div>
-												<h3 className="font-bold text-zinc-50 text-sm mb-1">
-													Flutter Mobile Development
-												</h3>
-												<p className="text-zinc-500 text-xs">Edspert.id</p>
-											</div>
-											<Badge
-												variant="outline"
-												className="mt-4 border-zinc-800 text-zinc-500 py-0.5 px-2 self-start text-[10px]"
-											>
-												Course Graduate
-											</Badge>
-										</Card>
-
-										<Card className="border border-zinc-850/60 bg-zinc-950/20 p-5 rounded-2xl flex flex-col justify-between text-left">
-											<div>
-												<h3 className="font-bold text-zinc-50 text-sm mb-1">
-													Software Engineering Level II
-												</h3>
-												<p className="text-zinc-500 text-xs">BNSP</p>
-											</div>
-											<Badge
-												variant="outline"
-												className="mt-4 border-zinc-800 text-zinc-500 py-0.5 px-2 self-start text-[10px]"
-											>
-												National Certification
-											</Badge>
-										</Card>
-
-										<Card className="border border-zinc-850/60 bg-zinc-950/20 p-5 rounded-2xl flex flex-col justify-between text-left">
-											<div>
-												<h3 className="font-bold text-zinc-50 text-sm mb-1">
-													English Proficiency (TOEIC)
-												</h3>
-												<p className="text-zinc-500 text-xs">Global Exam System</p>
-											</div>
-											<div className="mt-4 flex items-center justify-between w-full">
-												<Badge
-													variant="outline"
-													className="border-zinc-800 text-amber-500 py-0.5 px-2 text-[10px]"
-												>
-													Score: 870
-												</Badge>
-												<span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
-													Professional Working
-												</span>
-											</div>
-										</Card>
-									</div>
-								</div>
-							</div>
-						)}
-
-						{/* Projects Section */}
-						{activeTab === "projects" && (
-							<div className="space-y-6">
-								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-									{PROJECTS.map((proj) => (
-										<Card
-											key={proj.title}
-											className="border border-zinc-850 bg-zinc-900/10 hover:border-amber-500/25 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/2"
+						<section id="skills" className="space-y-6">
+							<h2 className="text-xl font-extrabold text-zinc-50 mb-8 flex items-center gap-2.5">
+								<span className="h-2.5 w-2.5 bg-amber-500 rounded-full" /> Technical Skills
+							</h2>
+							<div className="flex flex-wrap gap-1.5 py-1 border-b border-zinc-900 mb-6">
+								{(["all", "languages", "frameworks", "databases", "devops"] as const).map(
+									(filterOpt) => (
+										<button
+											key={filterOpt}
+											type="button"
+											onClick={() => setSkillFilter(filterOpt)}
+											className={`px-3.5 py-1.5 rounded-xl text-xs font-bold capitalize transition-all cursor-pointer ${
+												skillFilter === filterOpt
+													? "bg-amber-500 text-zinc-950 shadow-md shadow-amber-500/10"
+													: "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/40"
+											}`}
 										>
-											<div>
-												<div className="flex items-center justify-between mb-4 gap-2">
-													<Badge
-														variant="secondary"
-														className="border-transparent text-[9px] uppercase font-black tracking-wider py-0.5 px-2.5 bg-amber-500/10 text-amber-500"
+											{filterOpt === "all"
+												? "All Skills"
+												: filterOpt === "devops"
+													? "DevOps & Tools"
+													: filterOpt}
+										</button>
+									),
+								)}
+							</div>{" "}
+							{/* Grouped Skills Grid */}
+							<div className="space-y-8">
+								{(
+									(skillFilter === "all"
+										? ["languages", "frameworks", "databases", "devops"]
+										: [skillFilter]) as Skill["category"][]
+								).map((categoryKey) => {
+									const categorySkills = SKILLS.filter((s) => s.category === categoryKey);
+									if (categorySkills.length === 0) return null;
+									return (
+										<div key={categoryKey} className="space-y-4">
+											<h3 className="text-xs font-bold uppercase tracking-wider text-amber-500 border-l-2 border-amber-500 pl-2">
+												{CATEGORY_NAMES[categoryKey]}
+											</h3>
+											<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+												{categorySkills.map((skill) => (
+													<Card
+														key={skill.name}
+														className="border border-zinc-850/60 bg-zinc-900/10 hover:border-amber-500/20 hover:bg-zinc-900/30 rounded-xl p-4 flex flex-col justify-between transition-all duration-300 hover:-translate-y-0.5"
 													>
-														{proj.category}
-													</Badge>
-												</div>
-												<CardTitle className="text-lg font-bold text-zinc-50 mb-4 text-left">
-													{proj.title}
-												</CardTitle>
-												<div className="space-y-3">
-													{proj.description.map((desc) => (
-														<div key={desc.label} className="text-xs leading-relaxed text-left">
-															<strong className="text-zinc-350 block mb-0.5">{desc.label}</strong>
-															<span className="text-zinc-450">{desc.text}</span>
+														<div className="flex items-center justify-between gap-2 mb-2">
+															<span className="text-sm font-bold text-zinc-150">{skill.name}</span>
+															<span
+																className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${
+																	skill.level === "Advanced"
+																		? "bg-amber-500/10 text-amber-400 border-amber-500/20"
+																		: "bg-zinc-800/40 text-zinc-400 border-zinc-800"
+																}`}
+															>
+																{skill.level}
+															</span>
 														</div>
-													))}
-												</div>
-											</div>
 
-											<div className="mt-6 flex flex-wrap gap-1.5 border-t border-zinc-900/60 pt-4">
-												{proj.tags.map((tag) => (
-													<Badge
-														key={tag}
-														variant="outline"
-														className="border-zinc-850 text-zinc-500 text-[10px] py-0 px-2 font-medium"
-													>
-														{tag}
-													</Badge>
+														<div className="w-full bg-zinc-950 h-1.5 rounded-full overflow-hidden mt-2">
+															<div
+																className={`h-full rounded-full transition-all duration-500 ${
+																	skill.level === "Advanced"
+																		? "bg-gradient-to-r from-amber-500 to-orange-500 w-[90%]"
+																		: "bg-zinc-650 w-[60%]"
+																}`}
+															/>
+														</div>
+													</Card>
 												))}
 											</div>
-										</Card>
-									))}
+										</div>
+									);
+								})}
+							</div>
+							{/* Certifications Box */}
+							<div className="pt-10 border-t border-zinc-900 mt-10">
+								<h2 className="text-lg font-extrabold text-zinc-50 mb-6 flex items-center gap-2">
+									<span className="h-2 w-2 rounded-full bg-amber-500" /> Certifications &
+									Credentials
+								</h2>
+
+								<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+									<Card className="border border-zinc-850/60 bg-zinc-950/20 p-5 rounded-2xl flex flex-col justify-between text-left">
+										<div>
+											<h3 className="font-bold text-zinc-50 text-sm mb-1">
+												Junior Mobile Programmer (VSGA)
+											</h3>
+											<p className="text-zinc-500 text-xs">Kementerian Kominfo RI</p>
+										</div>
+										<Badge
+											variant="outline"
+											className="mt-4 border-zinc-800 text-amber-500/90 py-0.5 px-2 self-start text-[10px]"
+										>
+											Credential ID: VSGA-Kominfo
+										</Badge>
+									</Card>
+
+									<Card className="border border-zinc-850/60 bg-zinc-950/20 p-5 rounded-2xl flex flex-col justify-between text-left">
+										<div>
+											<h3 className="font-bold text-zinc-50 text-sm mb-1">
+												Flutter Mobile Development
+											</h3>
+											<p className="text-zinc-500 text-xs">Edspert.id</p>
+										</div>
+										<Badge
+											variant="outline"
+											className="mt-4 border-zinc-800 text-zinc-500 py-0.5 px-2 self-start text-[10px]"
+										>
+											Course Graduate
+										</Badge>
+									</Card>
+
+									<Card className="border border-zinc-850/60 bg-zinc-950/20 p-5 rounded-2xl flex flex-col justify-between text-left">
+										<div>
+											<h3 className="font-bold text-zinc-50 text-sm mb-1">
+												Software Engineering Level II
+											</h3>
+											<p className="text-zinc-500 text-xs">BNSP</p>
+										</div>
+										<Badge
+											variant="outline"
+											className="mt-4 border-zinc-800 text-zinc-500 py-0.5 px-2 self-start text-[10px]"
+										>
+											National Certification
+										</Badge>
+									</Card>
+
+									<Card className="border border-zinc-850/60 bg-zinc-950/20 p-5 rounded-2xl flex flex-col justify-between text-left">
+										<div>
+											<h3 className="font-bold text-zinc-50 text-sm mb-1">
+												English Proficiency (TOEIC)
+											</h3>
+											<p className="text-zinc-500 text-xs">Global Exam System</p>
+										</div>
+										<div className="mt-4 flex items-center justify-between w-full">
+											<Badge
+												variant="outline"
+												className="border-zinc-800 text-amber-500 py-0.5 px-2 text-[10px]"
+											>
+												Score: 870
+											</Badge>
+											<span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
+												Professional Working
+											</span>
+										</div>
+									</Card>
 								</div>
 							</div>
-						)}
+						</section>
+
+						<div className="h-px bg-zinc-900 my-16" />
+
+						{/* Projects Section */}
+						<section id="projects" className="space-y-6">
+							<h2 className="text-xl font-extrabold text-zinc-50 mb-8 flex items-center gap-2.5">
+								<span className="h-2.5 w-2.5 bg-amber-500 rounded-full" /> Featured Projects
+							</h2>
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+								{PROJECTS.map((proj) => (
+									<Card
+										key={proj.title}
+										className="border border-zinc-850 bg-zinc-900/10 hover:border-amber-500/25 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/2"
+									>
+										<div>
+											<div className="flex items-center justify-between mb-4 gap-2">
+												<Badge
+													variant="secondary"
+													className="border-transparent text-[9px] uppercase font-black tracking-wider py-0.5 px-2.5 bg-amber-500/10 text-amber-500"
+												>
+													{proj.category}
+												</Badge>
+											</div>
+											<CardTitle className="text-lg font-bold text-zinc-50 mb-4 text-left">
+												{proj.title}
+											</CardTitle>
+											<div className="space-y-3">
+												{proj.description.map((desc) => (
+													<div key={desc.label} className="text-xs leading-relaxed text-left">
+														<strong className="text-zinc-350 block mb-0.5">{desc.label}</strong>
+														<span className="text-zinc-450">{desc.text}</span>
+													</div>
+												))}
+											</div>
+										</div>
+
+										<div className="mt-6 flex flex-wrap gap-1.5 border-t border-zinc-900/60 pt-4">
+											{proj.tags.map((tag) => (
+												<Badge
+													key={tag}
+													variant="outline"
+													className="border-zinc-850 text-zinc-500 text-[10px] py-0 px-2 font-medium"
+												>
+													{tag}
+												</Badge>
+											))}
+										</div>
+									</Card>
+								))}
+							</div>
+						</section>
 					</main>
 				</div>
 			</div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
@@ -12,6 +12,15 @@ const Movies = () => {
 	const navigate = useNavigate();
 
 	const { data, isLoading, isFetching, error } = useGetPopularMoviesQuery(page);
+
+	// Automatically navigate to search page with query when user types (debounced)
+	useEffect(() => {
+		if (!searchQuery.trim()) return;
+		const timer = setTimeout(() => {
+			navigate(`/movies/search?q=${encodeURIComponent(searchQuery.trim())}`);
+		}, 500);
+		return () => clearTimeout(timer);
+	}, [searchQuery, navigate]);
 
 	const popularMovies = data?.results || [];
 
