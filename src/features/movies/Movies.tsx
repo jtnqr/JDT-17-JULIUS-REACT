@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import HomeFeatures from "../../components/Homepage/HomeFeatures";
 import HomeHero from "../../components/Homepage/HomeHero";
 import HomeTrending from "../../components/Homepage/HomeTrending";
 import { useToken } from "../auth/useToken";
@@ -175,6 +176,9 @@ const Movies = () => {
 
 				{/* Home Trending spotlight section */}
 				<HomeTrending />
+
+				{/* Home Features section */}
+				<HomeFeatures />
 
 				{/* Movies Grid (Directory / Search Results) */}
 				<section
