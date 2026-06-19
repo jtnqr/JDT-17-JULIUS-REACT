@@ -1,3 +1,15 @@
+import {
+	Code2,
+	Cpu,
+	Database,
+	Github,
+	Key,
+	Server,
+	Shield,
+	Terminal,
+	Wrench,
+	Zap,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +34,84 @@ const CATEGORY_NAMES: Record<Skill["category"], string> = {
 	frameworks: "Frameworks & Libraries",
 	databases: "Databases & Storage",
 	devops: "DevOps & Tools",
+};
+
+const SKILL_SLUGS: Record<string, string> = {
+	PHP: "php",
+	JavaScript: "javascript",
+	TypeScript: "typescript",
+	Python: "python",
+	Golang: "go",
+	Java: "java",
+	Laravel: "laravel",
+	ElysiaJS: "elysia",
+	"Next.js": "nextdotjs",
+	React: "react",
+	"Tailwind CSS": "tailwindcss",
+	DaisyUI: "daisyui",
+	LangChain: "langchain",
+	CodeIgniter: "codeigniter",
+	"Vue.js": "vuedotjs",
+	Flask: "flask",
+	Gin: "go",
+	MySQL: "mysql",
+	PostgreSQL: "postgresql",
+	Supabase: "supabase",
+	LanceDB: "database",
+	SQLite: "sqlite",
+	Prisma: "prisma",
+	"Docker (Compose)": "docker",
+	"Git & GitHub": "git",
+	Bash: "gnubash",
+	"Linux (Debian/Ubuntu)": "linux",
+	SSH: "openssh",
+	UFW: "linux",
+	Vim: "vim",
+	"VS Code": "visualstudiocode",
+};
+
+const getSkillIcon = (skill: Skill) => {
+	// 1. Check for specific Lucide icons first (where a clear, high-quality match exists)
+	if (skill.name === "Git & GitHub") {
+		return <Github className="h-3.5 w-3.5 text-zinc-300 shrink-0" />;
+	}
+	if (skill.name === "Bash") {
+		return <Terminal className="h-3.5 w-3.5 text-zinc-300 shrink-0" />;
+	}
+	if (skill.name === "SSH") {
+		return <Key className="h-3.5 w-3.5 text-zinc-300 shrink-0" />;
+	}
+	if (skill.name === "UFW") {
+		return <Shield className="h-3.5 w-3.5 text-zinc-300 shrink-0" />;
+	}
+
+	// 2. Fallback to Simple Icons brand logo if mapped
+	const slug = SKILL_SLUGS[skill.name];
+	if (slug && slug !== "database") {
+		return (
+			<img
+				src={`https://cdn.simpleicons.org/${slug}`}
+				alt=""
+				className="h-3.5 w-3.5 object-contain shrink-0 filter brightness-90 saturate-75 hover:brightness-100 hover:saturate-100 transition-all"
+				loading="lazy"
+			/>
+		);
+	}
+
+	// 3. Fallback to category-based Lucide icons
+	const categoryClass = "h-3.5 w-3.5 text-zinc-400 shrink-0";
+	switch (skill.category) {
+		case "languages":
+			return <Code2 className={categoryClass} />;
+		case "frameworks":
+			return <Cpu className={categoryClass} />;
+		case "databases":
+			return <Database className={categoryClass} />;
+		case "devops":
+			return <Server className={categoryClass} />;
+		default:
+			return <Wrench className={categoryClass} />;
+	}
 };
 
 const SKILLS: Skill[] = [
@@ -452,20 +542,26 @@ export default function CV() {
 																: "bg-zinc-900/30 border-zinc-850 hover:border-zinc-700/60 hover:bg-zinc-900/60"
 														}`}
 													>
-														<span
-															className={`h-1.5 w-1.5 rounded-full ${
-																skill.level === "Advanced" ? "bg-amber-500" : "bg-zinc-500"
-															}`}
-														/>
+														{getSkillIcon(skill)}
 														<span className="text-xs font-medium text-zinc-150">{skill.name}</span>
 														<span
-															className={`text-[8px] font-black tracking-wider uppercase px-1 rounded-sm ${
+															className={`flex items-center gap-1 text-[8px] font-black tracking-wider uppercase px-1 rounded-sm ${
 																skill.level === "Advanced"
 																	? "bg-amber-500/10 text-amber-400/90"
 																	: "bg-zinc-950 text-zinc-550 border border-zinc-850"
 															}`}
 														>
-															{skill.level === "Advanced" ? "ADV" : "INT"}
+															{skill.level === "Advanced" ? (
+																<>
+																	<Zap className="h-2 w-2 text-amber-500 fill-amber-500/20 shrink-0" />
+																	ADV
+																</>
+															) : (
+																<>
+																	<Shield className="h-2 w-2 text-zinc-500 shrink-0" />
+																	INT
+																</>
+															)}
 														</span>
 													</div>
 												))}
