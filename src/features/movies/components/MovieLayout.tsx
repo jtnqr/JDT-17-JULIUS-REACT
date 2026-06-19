@@ -1,13 +1,43 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, NavLink, Outlet, useNavigate } from "react-router";
+import { Link, NavLink, Outlet, useLocation, useNavigate, useSearchParams } from "react-router";
 import { Button } from "@/components/ui/button";
 import { useToken } from "../../auth/useToken";
 
 export default function MovieLayout() {
 	const { user, logout } = useToken();
 	const navigate = useNavigate();
+	const location = useLocation();
+	const [searchParams, setSearchParams] = useSearchParams();
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
+
+	const isPopularPage = location.pathname === "/movies" || location.pathname === "/movies/";
+	const urlQuery = searchParams.get("q") || "";
+	const [navSearchQuery, setNavSearchQuery] = useState(urlQuery);
+
+	// Synchronize navbar search input with URL search param
+	useEffect(() => {
+		setNavSearchQuery(urlQuery);
+	}, [urlQuery]);
+
+	// Automatically update search params or navigate on query change
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			const currentUrlQuery = searchParams.get("q") || "";
+			if (navSearchQuery !== currentUrlQuery) {
+				if (navSearchQuery.trim()) {
+					if (location.pathname !== "/movies/search") {
+						navigate(`/movies/search?q=${encodeURIComponent(navSearchQuery.trim())}`);
+					} else {
+						setSearchParams({ q: navSearchQuery }, { replace: true });
+					}
+				} else if (location.pathname === "/movies/search") {
+					setSearchParams({}, { replace: true });
+				}
+			}
+		}, 400);
+		return () => clearTimeout(timer);
+	}, [navSearchQuery, location.pathname, navigate, searchParams, setSearchParams]);
 
 	const handleLogout = () => {
 		logout();
@@ -27,19 +57,23 @@ export default function MovieLayout() {
 		};
 	}, []);
 
+	const handleNavSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setNavSearchQuery(e.target.value);
+	};
+
 	if (!user) {
 		return null;
 	}
 
 	return (
 		<div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-between">
-			{/* Top thin bar for Back to Hub navigation */}
-			<div className="w-full bg-zinc-950/80 border-b border-zinc-900/40 py-2">
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-start">
+			{/* Top thin bar for Back to Hub navigation & Profile */}
+			<div className="w-full bg-zinc-950/80 border-b border-zinc-900/40 py-2 relative z-50">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
 					<Button
 						asChild
 						variant="ghost"
-						className="text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900 group gap-1.5 rounded-xl text-xs font-semibold px-2.5 py-1.5 cursor-pointer"
+						className="text-zinc-455 hover:text-zinc-100 hover:bg-zinc-900 group gap-1.5 rounded-xl text-xs font-semibold px-2.5 py-1.5 cursor-pointer"
 					>
 						<Link to="/">
 							<svg
@@ -55,92 +89,16 @@ export default function MovieLayout() {
 							Back to Hub Portal
 						</Link>
 					</Button>
-				</div>
-			</div>
-
-			{/* Header Navigation */}
-			<header className="sticky top-0 z-50 w-full border-b border-zinc-900/60 bg-zinc-950/80 backdrop-blur-md">
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-					{/* Logo & Links */}
-					<div className="flex items-center gap-6 sm:gap-8 overflow-hidden">
-						{/* Logo */}
-						<Link to="/movies" className="flex items-center gap-2.5 group shrink-0">
-							<span className="h-8 w-8 rounded-lg bg-amber-500 flex items-center justify-center text-zinc-950 font-black text-base shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-amber-500/20">
-								PH
-							</span>
-							<span className="font-bold text-lg tracking-tight text-zinc-50 group-hover:text-amber-400 transition-colors duration-300 hidden sm:inline">
-								PilemHub
-							</span>
-						</Link>
-
-						{/* Movie Navigation Links */}
-						<nav
-							className="flex items-center gap-3 sm:gap-5 overflow-x-auto no-scrollbar py-1"
-							aria-label="Main movie navigation"
-						>
-							<NavLink
-								to="/movies"
-								end
-								className={({ isActive }) =>
-									`text-xs sm:text-sm font-bold transition-colors duration-200 whitespace-nowrap shrink-0 ${
-										isActive ? "text-amber-500" : "text-zinc-450 hover:text-zinc-100"
-									}`
-								}
-							>
-								Popular
-							</NavLink>
-							<NavLink
-								to="/movies/now-playing"
-								className={({ isActive }) =>
-									`text-xs sm:text-sm font-bold transition-colors duration-200 whitespace-nowrap shrink-0 ${
-										isActive ? "text-amber-500" : "text-zinc-450 hover:text-zinc-100"
-									}`
-								}
-							>
-								Now Playing
-							</NavLink>
-							<NavLink
-								to="/movies/top-rated"
-								className={({ isActive }) =>
-									`text-xs sm:text-sm font-bold transition-colors duration-200 whitespace-nowrap shrink-0 ${
-										isActive ? "text-amber-500" : "text-zinc-450 hover:text-zinc-100"
-									}`
-								}
-							>
-								Top Rated
-							</NavLink>
-							<NavLink
-								to="/movies/upcoming"
-								className={({ isActive }) =>
-									`text-xs sm:text-sm font-bold transition-colors duration-200 whitespace-nowrap shrink-0 ${
-										isActive ? "text-amber-500" : "text-zinc-450 hover:text-zinc-100"
-									}`
-								}
-							>
-								Upcoming
-							</NavLink>
-							<NavLink
-								to="/movies/search"
-								className={({ isActive }) =>
-									`text-xs sm:text-sm font-bold transition-colors duration-200 whitespace-nowrap shrink-0 ${
-										isActive ? "text-amber-500" : "text-zinc-450 hover:text-zinc-100"
-									}`
-								}
-							>
-								Search
-							</NavLink>
-						</nav>
-					</div>
 
 					{/* Right Profile Dropdown Menu */}
-					<div className="relative shrink-0" ref={dropdownRef}>
+					<div className="relative shrink-0 animate-in fade-in" ref={dropdownRef}>
 						<Button
 							onClick={() => setIsDropdownOpen(!isDropdownOpen)}
 							variant="ghost"
-							className="text-zinc-400 hover:text-zinc-50 hover:bg-zinc-900/40 p-2 rounded-xl flex items-center gap-2 cursor-pointer focus:outline-hidden"
+							className="text-zinc-400 hover:text-zinc-50 hover:bg-zinc-900/40 px-2.5 py-1.5 rounded-xl flex items-center gap-2 cursor-pointer focus:outline-hidden text-xs font-semibold"
 						>
 							<span className="hidden sm:inline text-xs font-semibold">{user.username}</span>
-							<div className="h-8 w-8 rounded-xl bg-zinc-800 border border-zinc-700 overflow-hidden flex items-center justify-center">
+							<div className="h-6 w-6 rounded-lg bg-zinc-800 border border-zinc-700 overflow-hidden flex items-center justify-center">
 								{user.image ? (
 									<img
 										src={user.image}
@@ -225,6 +183,118 @@ export default function MovieLayout() {
 							</div>
 						)}
 					</div>
+				</div>
+			</div>
+
+			{/* Header Navigation */}
+			<header className="sticky top-0 z-50 w-full border-b border-zinc-900/60 bg-zinc-950/80 backdrop-blur-md">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+					{/* Logo & Links */}
+					<div className="flex items-center gap-6 sm:gap-8 overflow-hidden">
+						{/* Logo */}
+						<Link to="/movies" className="flex items-center gap-2.5 group shrink-0">
+							<span className="h-8 w-8 rounded-lg bg-amber-500 flex items-center justify-center text-zinc-950 font-black text-base shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-amber-500/20">
+								PH
+							</span>
+							<span className="font-bold text-lg tracking-tight text-zinc-50 group-hover:text-amber-400 transition-colors duration-300 hidden sm:inline">
+								PilemHub
+							</span>
+						</Link>
+
+						{/* Movie Navigation Links */}
+						<nav
+							className="flex items-center gap-3 sm:gap-5 overflow-x-auto no-scrollbar py-1"
+							aria-label="Main movie navigation"
+						>
+							<NavLink
+								to="/movies"
+								end
+								className={({ isActive }) =>
+									`text-xs sm:text-sm font-bold transition-colors duration-200 whitespace-nowrap shrink-0 ${
+										isActive ? "text-amber-500" : "text-zinc-450 hover:text-zinc-100"
+									}`
+								}
+							>
+								Popular
+							</NavLink>
+							<NavLink
+								to="/movies/now-playing"
+								className={({ isActive }) =>
+									`text-xs sm:text-sm font-bold transition-colors duration-200 whitespace-nowrap shrink-0 ${
+										isActive ? "text-amber-500" : "text-zinc-450 hover:text-zinc-100"
+									}`
+								}
+							>
+								Now Playing
+							</NavLink>
+							<NavLink
+								to="/movies/top-rated"
+								className={({ isActive }) =>
+									`text-xs sm:text-sm font-bold transition-colors duration-200 whitespace-nowrap shrink-0 ${
+										isActive ? "text-amber-500" : "text-zinc-450 hover:text-zinc-100"
+									}`
+								}
+							>
+								Top Rated
+							</NavLink>
+							<NavLink
+								to="/movies/upcoming"
+								className={({ isActive }) =>
+									`text-xs sm:text-sm font-bold transition-colors duration-200 whitespace-nowrap shrink-0 ${
+										isActive ? "text-amber-500" : "text-zinc-450 hover:text-zinc-100"
+									}`
+								}
+							>
+								Upcoming
+							</NavLink>
+						</nav>
+					</div>
+
+					{/* Navbar Search Input (hidden on popular page) */}
+					{!isPopularPage && (
+						<div className="relative w-full max-w-[160px] sm:max-w-[240px] animate-in fade-in slide-in-from-right-3 duration-250 shrink-0">
+							<svg
+								className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								strokeWidth={2}
+							>
+								<title>Search Icon</title>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+								/>
+							</svg>
+							<input
+								type="text"
+								placeholder="Search movies..."
+								value={navSearchQuery}
+								onChange={handleNavSearchChange}
+								className="w-full pl-9 pr-8 py-1.5 bg-zinc-900/50 border border-zinc-800/80 hover:border-zinc-700/80 focus:border-amber-500/50 rounded-xl text-xs text-zinc-150 placeholder-zinc-500 focus:outline-hidden transition-all duration-300 shadow-inner"
+							/>
+							{navSearchQuery && (
+								<button
+									type="button"
+									onClick={() => setNavSearchQuery("")}
+									className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 flex items-center justify-center rounded-full hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors"
+									aria-label="Clear search"
+								>
+									<svg
+										className="w-3 h-3"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										strokeWidth={2.5}
+									>
+										<title>Clear Icon</title>
+										<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+									</svg>
+								</button>
+							)}
+						</div>
+					)}
 				</div>
 			</header>
 
