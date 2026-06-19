@@ -278,10 +278,25 @@ export default function Home() {
 			{/* Footer */}
 			<footer className="w-full border-t border-zinc-900 bg-zinc-950 py-10">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-					<div className="flex items-center gap-3">
+					<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
 						<span className="text-zinc-400 text-sm font-semibold tracking-wide">
 							JDT-17 © {new Date().getFullYear()}
 						</span>
+						<span className="hidden sm:inline text-zinc-800">|</span>
+						<a
+							href="https://github.com/jtnqr/JDT-17-JULIUS-REACT"
+							target="_blank"
+							rel="noreferrer"
+							className="text-zinc-500 hover:text-zinc-355 text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
+						>
+							<img
+								src="https://cdn.simpleicons.org/github/71717a"
+								alt=""
+								className="h-3.5 w-3.5 object-contain filter hover:brightness-125 transition-all"
+								loading="lazy"
+							/>
+							View on GitHub
+						</a>
 					</div>
 					<p className="text-zinc-500 text-xs text-center sm:text-left leading-relaxed">
 						Project 1: Module Selection Hub
