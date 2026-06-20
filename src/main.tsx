@@ -2,9 +2,9 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import { router } from "./routes";
 import { store } from "./store";
-import { ErrorBoundary } from "./components/ErrorBoundary";
 import "./index.css";
 
 const rootElement = document.getElementById("root");

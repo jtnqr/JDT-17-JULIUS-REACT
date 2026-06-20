@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate, useSearchParams } from "react-router";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Button } from "@/components/ui/button";
 import { useToken } from "../../auth/useToken";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 export default function MovieLayout() {
 	const { user, logout } = useToken();
