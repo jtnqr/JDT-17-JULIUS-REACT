@@ -42,7 +42,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
 							src={posterUrl}
 							alt={movie.title}
 							loading="lazy"
-							className="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+							className="block h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
 						/>
 					) : (
 						<div className="flex h-full w-full flex-col items-center justify-center p-4 bg-linear-to-br from-amber-500/5 to-orange-600/5 text-zinc-650">
