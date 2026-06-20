@@ -1,22 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import MovieCard from "./components/MovieCard";
-import { useInPageSearch } from "./components/MovieLayout";
 import Pagination from "./components/Pagination";
 import { useGetPopularMoviesQuery } from "./moviesApi";
 
 const Movies = () => {
-	const { setHasInPageSearch } = useInPageSearch();
 	const [page, setPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		setHasInPageSearch(true);
-		return () => setHasInPageSearch(false);
-	}, [setHasInPageSearch]);
 
 	const { data, isLoading, isFetching, error } = useGetPopularMoviesQuery(page);
 

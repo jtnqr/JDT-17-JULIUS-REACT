@@ -3,18 +3,10 @@ import { useSearchParams } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import MovieCard from "./components/MovieCard";
-import { useInPageSearch } from "./components/MovieLayout";
 import Pagination from "./components/Pagination";
 import { useSearchMoviesQuery } from "./moviesApi";
 
 export default function Search() {
-	const { setHasInPageSearch } = useInPageSearch();
-
-	useEffect(() => {
-		setHasInPageSearch(true);
-		return () => setHasInPageSearch(false);
-	}, [setHasInPageSearch]);
-
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const initialQuery = searchParams.get("q") || "";
