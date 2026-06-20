@@ -34,7 +34,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
 
 	return (
 		<Link to={`/movies/${movie.id}`} className="block w-full h-full">
-			<Card className="group relative flex flex-col overflow-hidden bg-zinc-900/50 hover:bg-zinc-900/80 border border-zinc-800/80 hover:border-amber-500/25 shadow-sm hover:shadow-xl hover:shadow-amber-500/2 hover:-translate-y-0.5 transition-all duration-300 rounded-2xl w-full h-full">
+			<Card className="group relative flex flex-col overflow-hidden bg-zinc-900/50 hover:bg-zinc-900/80 border border-zinc-800/80 hover:border-amber-500/25 shadow-sm hover:shadow-xl hover:shadow-amber-500/2 hover:-translate-y-0.5 transition-all duration-300 rounded-2xl w-full h-full py-0">
 				{/* Poster Container */}
 				<div className="aspect-2/3 w-full overflow-hidden bg-zinc-950 relative">
 					{posterUrl ? (
