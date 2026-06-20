@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Link, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -17,8 +17,17 @@ const TMDB_CAST_BASE = "https://image.tmdb.org/t/p/w185";
 
 const MovieDetail = () => {
 	const { id } = useParams<{ id: string }>();
+	const navigate = useNavigate();
 
 	const trailerRef = useRef<HTMLDivElement>(null);
+
+	const handleBack = () => {
+		if (window.history.state && window.history.state.idx > 0) {
+			navigate(-1);
+		} else {
+			navigate("/movies");
+		}
+	};
 
 	const {
 		data: movie,
@@ -156,10 +165,20 @@ const MovieDetail = () => {
 						{errorMessage || "The movie details could not be found."}
 					</p>
 					<Button
-						asChild
-						className="w-full bg-amber-500 hover:bg-amber-600 text-zinc-950 font-bold"
+						onClick={handleBack}
+						className="w-full bg-amber-500 hover:bg-amber-600 text-zinc-950 font-bold gap-2 cursor-pointer"
 					>
-						<Link to="/movies">Return to Directory</Link>
+						<svg
+							className="w-3.5 h-3.5"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							strokeWidth={2.5}
+						>
+							<title>Arrow Left</title>
+							<path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+						</svg>
+						Go Back
 					</Button>
 				</div>
 			</div>
@@ -292,11 +311,21 @@ const MovieDetail = () => {
 								)}
 
 								<Button
-									asChild
 									variant="outline"
-									className="border-zinc-800 hover:bg-zinc-900 text-zinc-300 px-6 py-5 rounded-xl text-sm"
+									onClick={handleBack}
+									className="border-zinc-800 hover:bg-zinc-900 text-zinc-300 px-6 py-5 rounded-xl text-sm gap-2 transition-transform hover:scale-102 cursor-pointer flex items-center group"
 								>
-									<Link to="/movies">Back to Directory</Link>
+									<svg
+										className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										strokeWidth={2.5}
+									>
+										<title>Arrow Left</title>
+										<path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+									</svg>
+									Back
 								</Button>
 							</div>
 						</div>
