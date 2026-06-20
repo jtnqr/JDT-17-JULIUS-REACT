@@ -53,11 +53,11 @@ const Movies = () => {
 					onSubmit={handleSearchSubmit}
 					className="relative z-10 w-full max-w-2xl text-center space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500"
 				>
-					<div className="space-y-3">
+					<div className="space-y-3 text-center">
 						<h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-zinc-50 via-zinc-200 to-zinc-400">
 							Explore Cinema
 						</h1>
-						<p className="text-zinc-400 text-base md:text-lg font-medium max-w-lg mx-auto">
+						<p className="text-zinc-400 text-base md:text-lg font-medium max-w-lg mx-auto!">
 							Search millions of movies, check what's playing now, or explore top-rated films.
 						</p>
 					</div>
