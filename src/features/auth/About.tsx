@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -52,6 +53,8 @@ export default function About() {
 		logout();
 		navigate("/login", { replace: true });
 	};
+
+	const [showPassword, setShowPassword] = useState(false);
 
 	if (!user) {
 		return null;
@@ -215,9 +218,21 @@ export default function About() {
 								<span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
 									Session Password
 								</span>
-								<code className="text-sm font-bold text-zinc-400 font-mono">
-									{user.password || "••••••••"}
-								</code>
+								<div className="flex items-center gap-2">
+									<code className="text-sm font-bold text-zinc-400 font-mono">
+										{showPassword ? user.password : "••••••••"}
+									</code>
+									<Button
+										type="button"
+										onClick={() => setShowPassword(!showPassword)}
+										variant="ghost"
+										size="xs"
+										className="text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 rounded-lg cursor-pointer h-7 w-7 flex items-center justify-center focus:outline-hidden"
+										aria-label={showPassword ? "Hide password" : "Show password"}
+									>
+										{showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+									</Button>
+								</div>
 							</div>
 
 							{/* Log out section */}
