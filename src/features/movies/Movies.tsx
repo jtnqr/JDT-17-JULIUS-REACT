@@ -1,23 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import MovieCard from "./components/MovieCard";
 import MoviePageHeader from "./components/MoviePageHeader";
 import Pagination from "./components/Pagination";
-import { useGetPopularMoviesQuery } from "./moviesApi";
+import { useMoviePagination } from "./hooks/useMoviePagination";
+import { useGetNowPlayingMoviesQuery } from "./moviesApi";
 
 const Movies = () => {
-	const [page, setPage] = useState(1);
+	const [page, setPage] = useMoviePagination();
 	const [searchQuery, setSearchQuery] = useState("");
 	const navigate = useNavigate();
 
-	const { data, isLoading, isFetching, error } = useGetPopularMoviesQuery(page);
+	useEffect(() => {
+		document.title = "Now Playing Movies | JDT-17";
+	}, []);
 
-	const popularMovies = data?.results || [];
+	const { data, isLoading, isFetching, error } = useGetNowPlayingMoviesQuery(page);
+
+	const nowPlayingMovies = data?.results || [];
 
 	const handlePageChange = (newPage: number) => {
 		setPage(newPage);
-		const element = document.getElementById("popular-heading");
+		const element = document.getElementById("now-playing-section");
 		if (element) {
 			element.scrollIntoView({ behavior: "smooth" });
 		} else {
@@ -80,14 +85,14 @@ const Movies = () => {
 				</form>
 			</section>
 
-			{/* Popular Movies Section */}
+			{/* Now Playing Movies Section */}
 			<section
-				id="popular-section"
+				id="now-playing-section"
 				className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 text-left"
 			>
 				<div className="border-t border-zinc-800/80 pt-10">
 					{/* Header */}
-					<MoviePageHeader title="Popular Movies Right Now" />
+					<MoviePageHeader title="Now Playing in Theaters" />
 
 					{/* Directory Listing States */}
 					{isLoading || isFetching ? (
@@ -120,7 +125,7 @@ const Movies = () => {
 								{errorMessage}
 							</CardDescription>
 						</Card>
-					) : popularMovies.length === 0 ? (
+					) : nowPlayingMovies.length === 0 ? (
 						<Card className="border-dashed border-zinc-800 bg-zinc-950 p-16 text-center max-w-md mx-auto rounded-2xl flex flex-col items-center justify-center">
 							<div className="h-12 w-12 rounded-full bg-zinc-900/80 flex items-center justify-center text-zinc-500 mb-4 border border-zinc-800">
 								<svg
@@ -150,7 +155,7 @@ const Movies = () => {
 					) : (
 						<>
 							<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 items-start">
-								{popularMovies.map((movie) => (
+								{nowPlayingMovies.map((movie) => (
 									<MovieCard key={movie.id} movie={movie} />
 								))}
 							</div>

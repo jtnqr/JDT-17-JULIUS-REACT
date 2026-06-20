@@ -4,6 +4,7 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import MovieCard from "./components/MovieCard";
 import MoviePageHeader from "./components/MoviePageHeader";
 import Pagination from "./components/Pagination";
+import { useMoviePagination } from "./hooks/useMoviePagination";
 import { useSearchMoviesQuery } from "./moviesApi";
 
 export default function Search() {
@@ -13,7 +14,7 @@ export default function Search() {
 
 	const [searchQuery, setSearchQuery] = useState(initialQuery);
 	const [debouncedQuery, setDebouncedQuery] = useState(initialQuery);
-	const [page, setPage] = useState(1);
+	const [page, setPage] = useMoviePagination();
 
 	const { data, isFetching, isError, error } = useSearchMoviesQuery(
 		{ query: debouncedQuery, page },
@@ -37,20 +38,20 @@ export default function Search() {
 		return () => clearTimeout(timer);
 	}, [searchQuery]);
 
-	// Update URL search query on debounced search changes
+	// Update URL search query and reset page index on debounced search changes
 	useEffect(() => {
-		if (debouncedQuery.trim()) {
-			setSearchParams({ q: debouncedQuery }, { replace: true });
-		} else {
-			setSearchParams({}, { replace: true });
+		const currentUrlQuery = searchParams.get("q") || "";
+		if (debouncedQuery !== currentUrlQuery) {
+			const newParams = new URLSearchParams(searchParams);
+			if (debouncedQuery.trim()) {
+				newParams.set("q", debouncedQuery);
+			} else {
+				newParams.delete("q");
+			}
+			newParams.delete("page");
+			setSearchParams(newParams, { replace: true });
 		}
-	}, [debouncedQuery, setSearchParams]);
-
-	// Reset page to 1 when search query changes
-	// biome-ignore lint/correctness/useExhaustiveDependencies: reset page when query changes
-	useEffect(() => {
-		setPage(1);
-	}, [debouncedQuery]);
+	}, [debouncedQuery, searchParams, setSearchParams]);
 
 	useEffect(() => {
 		if (debouncedQuery.trim()) {

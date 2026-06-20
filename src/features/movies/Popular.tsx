@@ -1,23 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import MovieCard from "./components/MovieCard";
 import MoviePageHeader from "./components/MoviePageHeader";
 import Pagination from "./components/Pagination";
-import { useGetNowPlayingMoviesQuery } from "./moviesApi";
+import { useMoviePagination } from "./hooks/useMoviePagination";
+import { useGetPopularMoviesQuery } from "./moviesApi";
 
-export default function NowPlaying() {
-	const [page, setPage] = useState(1);
-	const { data, isLoading, isFetching, error } = useGetNowPlayingMoviesQuery(page);
+export default function Popular() {
+	const [page, setPage] = useMoviePagination();
+	const { data, isLoading, isFetching, error } = useGetPopularMoviesQuery(page);
 
 	useEffect(() => {
-		document.title = "Now Playing Movies | JDT-17";
+		document.title = "Popular Movies | JDT-17";
 	}, []);
 
-	const nowPlayingMovies = data?.results || [];
+	const popularMovies = data?.results || [];
 
 	const handlePageChange = (newPage: number) => {
 		setPage(newPage);
-		const element = document.getElementById("now-playing");
+		const element = document.getElementById("popular");
 		if (element) {
 			element.scrollIntoView({ behavior: "smooth" });
 		} else {
@@ -35,9 +36,9 @@ export default function NowPlaying() {
 	}
 
 	return (
-		<div id="now-playing" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-left">
+		<div id="popular" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-left">
 			{/* Directory Header */}
-			<MoviePageHeader title="Now Playing in Theaters" />
+			<MoviePageHeader title="Popular Movies" />
 
 			{/* Directory Listing States */}
 			{isLoading || isFetching ? (
@@ -68,7 +69,7 @@ export default function NowPlaying() {
 					</CardTitle>
 					<CardDescription className="text-destructive/80 text-sm">{errorMessage}</CardDescription>
 				</Card>
-			) : nowPlayingMovies.length === 0 ? (
+			) : popularMovies.length === 0 ? (
 				<Card className="border-dashed border-zinc-800 bg-zinc-950 p-16 text-center max-w-md mx-auto rounded-2xl flex flex-col items-center justify-center">
 					<div className="h-12 w-12 rounded-full bg-zinc-900/80 flex items-center justify-center text-zinc-500 mb-4 border border-zinc-800">
 						<svg
@@ -96,7 +97,7 @@ export default function NowPlaying() {
 			) : (
 				<>
 					<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 items-start">
-						{nowPlayingMovies.map((movie) => (
+						{popularMovies.map((movie) => (
 							<MovieCard key={movie.id} movie={movie} />
 						))}
 					</div>
