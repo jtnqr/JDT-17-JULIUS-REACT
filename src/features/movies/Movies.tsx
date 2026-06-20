@@ -4,10 +4,11 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import MovieCard from "./components/MovieCard";
 import MoviePageHeader from "./components/MoviePageHeader";
 import Pagination from "./components/Pagination";
+import { useMoviePagination } from "./hooks/useMoviePagination";
 import { useGetNowPlayingMoviesQuery } from "./moviesApi";
 
 const Movies = () => {
-	const [page, setPage] = useState(1);
+	const [page, setPage] = useMoviePagination();
 	const [searchQuery, setSearchQuery] = useState("");
 	const navigate = useNavigate();
 
