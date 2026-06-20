@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -9,10 +10,27 @@ interface MovieCardProps {
 
 const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
 
+const truncateText = (text: string, limit: number) => {
+	if (!text) return "";
+	if (text.length <= limit) return text;
+	return `${text.substring(0, limit).trim()}...`;
+};
+
 const MovieCard = ({ movie }: MovieCardProps) => {
 	const rating = movie.vote_average ? movie.vote_average.toFixed(1) : "N/A";
 	const releaseYear = movie.release_date ? new Date(movie.release_date).getFullYear() : null;
 	const posterUrl = movie.poster_path ? `${TMDB_IMAGE_BASE}${movie.poster_path}` : null;
+
+	const [characterLimit, setCharacterLimit] = useState(120);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setCharacterLimit(window.innerWidth < 640 ? 60 : 120);
+		};
+		handleResize();
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
 	return (
 		<Link to={`/movies/${movie.id}`} className="block w-full h-full">
@@ -66,8 +84,8 @@ const MovieCard = ({ movie }: MovieCardProps) => {
 				</div>
 
 				{/* Details Section */}
-				<div className="flex flex-1 flex-col p-3 sm:p-4 bg-zinc-900/40">
-					<div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-2 mb-2">
+				<div className="flex flex-1 flex-col p-3 sm:p-4 bg-zinc-900/40 relative">
+					<div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-2 mb-2 pr-6">
 						<h3 className="font-bold text-sm sm:text-base text-zinc-100 line-clamp-1 group-hover:text-amber-400 transition-colors duration-300">
 							{movie.title}
 						</h3>
@@ -80,9 +98,25 @@ const MovieCard = ({ movie }: MovieCardProps) => {
 							</Badge>
 						) : null}
 					</div>
-					<p className="text-xs text-zinc-400 line-clamp-3 leading-relaxed hidden sm:block">
-						{movie.overview || "No overview available."}
+					<p className="text-xs text-zinc-400 leading-relaxed pr-6 pb-2">
+						{movie.overview
+							? truncateText(movie.overview, characterLimit)
+							: "No overview available."}
 					</p>
+
+					{/* Arrow icon pinned to bottom-right */}
+					<div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 text-zinc-500 group-hover:text-amber-500 transition-colors duration-300">
+						<svg
+							className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-350"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							strokeWidth={2.5}
+							aria-hidden="true"
+						>
+							<path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H9M17 7V15" />
+						</svg>
+					</div>
 				</div>
 			</Card>
 		</Link>
