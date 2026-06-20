@@ -84,7 +84,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
 				</div>
 
 				{/* Details Section */}
-				<div className="flex flex-1 flex-col p-3 sm:p-4 bg-transparent relative">
+				<div className="flex flex-1 flex-col pt-2 pb-3 px-3 sm:pt-2.5 sm:pb-4 sm:px-4 bg-transparent relative">
 					<div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-2 mb-2 pr-6">
 						<h3 className="font-bold text-sm sm:text-base text-zinc-100 line-clamp-1 group-hover:text-amber-400 transition-colors duration-300">
 							{movie.title}
