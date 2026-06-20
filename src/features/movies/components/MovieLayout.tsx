@@ -315,7 +315,7 @@ export default function MovieLayout() {
 					{/* Mobile Navigation Controls */}
 					<div className="flex sm:hidden items-center gap-1.5 shrink-0">
 						{/* Search Icon Link */}
-						{location.pathname !== "/movies/search" && (
+						{location.pathname !== "/movies/search" && !hasInPageSearch && (
 							<Link
 								to="/movies/search"
 								className="p-2 text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900 rounded-xl transition-colors cursor-pointer flex items-center justify-center h-9 w-9"
