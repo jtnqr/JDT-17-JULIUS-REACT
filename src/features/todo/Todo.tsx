@@ -15,9 +15,14 @@ export default function Todo() {
 	const [editingText, setEditingText] = useState("");
 	const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
 	const editInputRef = useRef<HTMLInputElement>(null);
+	const newTodoInputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		document.title = "TO-DO | JDT-17";
+		// Focus on desktop viewport only to avoid mobile keyboard popups
+		if (newTodoInputRef.current && window.matchMedia("(min-width: 768px)").matches) {
+			newTodoInputRef.current.focus();
+		}
 	}, []);
 
 	useEffect(() => {
@@ -113,6 +118,7 @@ export default function Todo() {
 							{/* Todo input form */}
 							<form onSubmit={handleAddTodo} className="flex gap-2">
 								<input
+									ref={newTodoInputRef}
 									type="text"
 									placeholder="Add a new task..."
 									value={newTodoText}

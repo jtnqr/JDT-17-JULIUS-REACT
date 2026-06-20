@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import MovieCard from "./components/MovieCard";
+import MoviePageHeader from "./components/MoviePageHeader";
 import Pagination from "./components/Pagination";
 import { useGetTopRatedMoviesQuery } from "./moviesApi";
 
@@ -37,29 +37,11 @@ export default function TopRated() {
 	return (
 		<div id="top-rated" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-left">
 			{/* Directory Header */}
-			<div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-zinc-900 pb-6">
-				<div>
-					<h2 className="text-xs font-bold tracking-widest text-amber-500 uppercase mb-3">
-						Movie Directory
-					</h2>
-					<h3 className="text-3xl font-bold tracking-tight text-zinc-50 sm:text-4xl">
-						Top Rated Movies
-					</h3>
-				</div>
-
-				<div className="flex items-center gap-4 w-full md:w-auto shrink-0">
-					<Badge
-						variant="secondary"
-						className="px-3 py-1 h-7 rounded-full text-sm font-semibold border-zinc-800 text-amber-400 bg-amber-500/10 shrink-0"
-					>
-						{isLoading || isFetching ? "Loading..." : `${topRatedMovies.length} Movies`}
-					</Badge>
-				</div>
-			</div>
+			<MoviePageHeader title="Top Rated Movies" />
 
 			{/* Directory Listing States */}
 			{isLoading || isFetching ? (
-				<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+				<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 items-start">
 					{[1, 2, 3, 4, 5, 6, 7, 8].map((key) => (
 						<div
 							key={key}
@@ -113,7 +95,7 @@ export default function TopRated() {
 				</Card>
 			) : (
 				<>
-					<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+					<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 items-start">
 						{topRatedMovies.map((movie) => (
 							<MovieCard key={movie.id} movie={movie} />
 						))}

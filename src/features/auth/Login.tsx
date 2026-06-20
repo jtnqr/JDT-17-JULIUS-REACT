@@ -1,5 +1,6 @@
+import { Eye, EyeOff } from "lucide-react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import { Badge } from "@/components/ui/badge";
@@ -22,9 +23,16 @@ export default function Login() {
 	const [errors, setErrors] = useState<Partial<LoginFields>>({});
 	const [authError, setAuthError] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
+	const [showPassword, setShowPassword] = useState(false);
+
+	const usernameRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		document.title = "Login | JDT-17";
+		// Focus on desktop viewport only to avoid mobile keyboard popups
+		if (usernameRef.current && window.matchMedia("(min-width: 768px)").matches) {
+			usernameRef.current.focus();
+		}
 	}, []);
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -138,6 +146,7 @@ export default function Login() {
 								</label>
 								<input
 									id="username"
+									ref={usernameRef}
 									type="text"
 									value={username}
 									onChange={(e) => setUsername(e.target.value)}
@@ -158,16 +167,28 @@ export default function Login() {
 								>
 									Password
 								</label>
-								<input
-									id="password"
-									type="password"
-									value={password}
-									onChange={(e) => setPassword(e.target.value)}
-									placeholder="••••••••"
-									className={`w-full h-10 px-3.5 rounded-lg border ${
-										errors.password ? "border-destructive/50" : "border-zinc-850"
-									} bg-zinc-950/40 text-zinc-100 text-sm placeholder-zinc-650 focus:border-amber-500/50 outline-none transition-all`}
-								/>
+								<div className="relative">
+									<input
+										id="password"
+										type={showPassword ? "text" : "password"}
+										value={password}
+										onChange={(e) => setPassword(e.target.value)}
+										placeholder="••••••••"
+										className={`w-full h-10 pl-3.5 pr-10 rounded-lg border ${
+											errors.password ? "border-destructive/50" : "border-zinc-850"
+										} bg-zinc-950/40 text-zinc-100 text-sm placeholder-zinc-650 focus:border-amber-500/50 outline-none transition-all`}
+									/>
+									<Button
+										type="button"
+										onClick={() => setShowPassword(!showPassword)}
+										variant="ghost"
+										size="xs"
+										className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 rounded-lg cursor-pointer h-7 w-7 flex items-center justify-center focus:outline-hidden"
+										aria-label={showPassword ? "Hide password" : "Show password"}
+									>
+										{showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+									</Button>
+								</div>
 								{errors.password && (
 									<p className="text-destructive text-[11px] mt-1">{errors.password}</p>
 								)}

@@ -9,9 +9,8 @@ export const useToken = () => {
 
 	const login = useCallback(
 		(token: string, user: User) => {
-			const { password, ...userWithoutPassword } = user;
 			localStorage.setItem("token", token);
-			localStorage.setItem("user", JSON.stringify(userWithoutPassword));
+			localStorage.setItem("user", JSON.stringify(user));
 			dispatch(loginSuccess({ token, user }));
 		},
 		[dispatch],

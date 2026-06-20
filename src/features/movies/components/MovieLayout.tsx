@@ -11,6 +11,29 @@ export default function MovieLayout() {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
+	const [hasInPageSearch, setHasInPageSearch] = useState(false);
+
+	// Automatically detect if a search input exists in the main page content
+	useEffect(() => {
+		const checkSearchInput = () => {
+			const hasSearch = document.querySelector('main input[placeholder*="search" i]') !== null;
+			setHasInPageSearch(hasSearch);
+		};
+
+		// Run initially and track location changes
+		if (location.pathname) {
+			checkSearchInput();
+		}
+
+		// Observe DOM modifications within the main content area
+		const observer = new MutationObserver(checkSearchInput);
+		const mainEl = document.querySelector("main");
+		if (mainEl) {
+			observer.observe(mainEl, { childList: true, subtree: true });
+		}
+
+		return () => observer.disconnect();
+	}, [location.pathname]);
 
 	const isPopularPage = location.pathname === "/movies" || location.pathname === "/movies/";
 	const urlQuery = searchParams.get("q") || "";
@@ -292,7 +315,7 @@ export default function MovieLayout() {
 					{/* Mobile Navigation Controls */}
 					<div className="flex sm:hidden items-center gap-1.5 shrink-0">
 						{/* Search Icon Link */}
-						{location.pathname !== "/movies/search" && (
+						{location.pathname !== "/movies/search" && (!hasInPageSearch || showSearchOnScroll) && (
 							<Link
 								to="/movies/search"
 								className="p-2 text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900 rounded-xl transition-colors cursor-pointer flex items-center justify-center h-9 w-9"
@@ -349,59 +372,61 @@ export default function MovieLayout() {
 					</div>
 
 					{/* Navbar Search Input (hidden on popular page except when scrolled down, Desktop only) */}
-					{location.pathname !== "/movies/search" && (!isPopularPage || showSearchOnScroll) && (
-						<form
-							onSubmit={handleNavSearchSubmit}
-							className="hidden sm:block relative w-full max-w-[160px] sm:max-w-[240px] animate-in fade-in slide-in-from-right-3 duration-250 shrink-0"
-						>
-							<button
-								type="submit"
-								className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 hover:text-zinc-350 cursor-pointer flex items-center justify-center p-0 border-0 bg-transparent focus:outline-hidden"
-								aria-label="Submit search"
+					{location.pathname !== "/movies/search" &&
+						(!hasInPageSearch || showSearchOnScroll) &&
+						(!isPopularPage || showSearchOnScroll) && (
+							<form
+								onSubmit={handleNavSearchSubmit}
+								className="hidden sm:block relative w-full max-w-[160px] sm:max-w-[240px] animate-in fade-in slide-in-from-right-3 duration-250 shrink-0"
 							>
-								<svg
-									className="h-4 w-4"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-									strokeWidth={2}
-								>
-									<title>Search Icon</title>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-									/>
-								</svg>
-							</button>
-							<input
-								type="text"
-								placeholder="Search movies..."
-								value={navSearchQuery}
-								onChange={handleNavSearchChange}
-								className="w-full pl-9 pr-8 py-1.5 bg-zinc-900/50 border border-zinc-800/80 hover:border-zinc-700/80 focus:border-amber-500/50 rounded-xl text-xs text-zinc-150 placeholder-zinc-500 focus:outline-hidden transition-all duration-300 shadow-inner"
-							/>
-							{navSearchQuery && (
 								<button
-									type="button"
-									onClick={() => setNavSearchQuery("")}
-									className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 flex items-center justify-center rounded-full hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors"
-									aria-label="Clear search"
+									type="submit"
+									className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 hover:text-zinc-350 cursor-pointer flex items-center justify-center p-0 border-0 bg-transparent focus:outline-hidden"
+									aria-label="Submit search"
 								>
 									<svg
-										className="w-3 h-3"
+										className="h-4 w-4"
 										fill="none"
 										viewBox="0 0 24 24"
 										stroke="currentColor"
-										strokeWidth={2.5}
+										strokeWidth={2}
 									>
-										<title>Clear Icon</title>
-										<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+										<title>Search Icon</title>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+										/>
 									</svg>
 								</button>
-							)}
-						</form>
-					)}
+								<input
+									type="text"
+									placeholder="Search movies..."
+									value={navSearchQuery}
+									onChange={handleNavSearchChange}
+									className="w-full pl-9 pr-8 py-1.5 bg-zinc-900/50 border border-zinc-800/80 hover:border-zinc-700/80 focus:border-amber-500/50 rounded-xl text-xs text-zinc-150 placeholder-zinc-500 focus:outline-hidden transition-all duration-300 shadow-inner"
+								/>
+								{navSearchQuery && (
+									<button
+										type="button"
+										onClick={() => setNavSearchQuery("")}
+										className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 flex items-center justify-center rounded-full hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors"
+										aria-label="Clear search"
+									>
+										<svg
+											className="w-3 h-3"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+											strokeWidth={2.5}
+										>
+											<title>Clear Icon</title>
+											<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+										</svg>
+									</button>
+								)}
+							</form>
+						)}
 				</div>
 
 				{/* Mobile Menu Dropdown Panel */}
