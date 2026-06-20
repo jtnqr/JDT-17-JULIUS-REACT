@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate, useSearchParams } from "react-router";
 import { Button } from "@/components/ui/button";
 import { useToken } from "../../auth/useToken";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 export default function MovieLayout() {
 	const { user, logout } = useToken();
@@ -494,7 +495,43 @@ export default function MovieLayout() {
 
 			{/* Main Content */}
 			<main className="flex-1">
-				<Outlet />
+				<ErrorBoundary
+					fallback={
+						<div className="max-w-md mx-auto my-16 p-8 bg-zinc-900/90 border border-zinc-800 rounded-2xl text-center space-y-5 animate-in fade-in duration-200 shadow-xl">
+							<div className="mx-auto h-12 w-12 rounded-xl bg-destructive/10 border border-destructive/20 flex items-center justify-center text-destructive">
+								<svg
+									className="w-6 h-6"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									strokeWidth={2}
+								>
+									<title>Warning Icon</title>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+									/>
+								</svg>
+							</div>
+							<div className="space-y-1.5">
+								<h3 className="text-xl font-bold text-zinc-150">Could Not Load Content</h3>
+								<p className="text-xs text-zinc-400">
+									An error occurred while rendering this section.
+								</p>
+							</div>
+							<button
+								type="button"
+								onClick={() => window.location.reload()}
+								className="bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-5 py-2 rounded-xl text-xs transition-colors duration-200 cursor-pointer shadow-lg shadow-amber-500/10 focus:outline-hidden"
+							>
+								Reload Page
+							</button>
+						</div>
+					}
+				>
+					<Outlet />
+				</ErrorBoundary>
 			</main>
 
 			{/* Footer */}

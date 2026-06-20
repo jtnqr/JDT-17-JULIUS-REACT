@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { RouterProvider } from "react-router";
 import { router } from "./routes";
 import { store } from "./store";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import "./index.css";
 
 const rootElement = document.getElementById("root");
@@ -12,7 +13,9 @@ if (rootElement) {
 	createRoot(rootElement).render(
 		<StrictMode>
 			<Provider store={store}>
-				<RouterProvider router={router} />
+				<ErrorBoundary>
+					<RouterProvider router={router} />
+				</ErrorBoundary>
 			</Provider>
 		</StrictMode>,
 	);
