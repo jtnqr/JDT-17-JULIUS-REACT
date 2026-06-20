@@ -34,7 +34,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
 
 	return (
 		<Link to={`/movies/${movie.id}`} className="block w-full h-full">
-			<Card className="group relative flex flex-col overflow-hidden bg-zinc-900/50 hover:bg-zinc-900/80 border border-zinc-800/80 hover:border-amber-500/25 shadow-sm hover:shadow-xl hover:shadow-amber-500/2 hover:-translate-y-0.5 transition-all duration-300 rounded-2xl w-full h-full py-0">
+			<Card className="group relative flex flex-col overflow-hidden bg-zinc-900/50 hover:bg-zinc-900/80 border border-zinc-800/80 hover:border-amber-500/25 shadow-sm hover:shadow-xl hover:shadow-amber-500/2 hover:-translate-y-0.5 transition-all duration-300 rounded-2xl w-full h-full py-0 gap-0">
 				{/* Poster Container */}
 				<div className="aspect-2/3 w-full overflow-hidden bg-zinc-950 relative">
 					{posterUrl ? (
@@ -85,19 +85,19 @@ const MovieCard = ({ movie }: MovieCardProps) => {
 
 				{/* Details Section */}
 				<div className="flex flex-1 flex-col pt-2 pb-3 px-3 sm:pt-2.5 sm:pb-4 sm:px-4 bg-transparent relative">
-					<div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-2 mb-2 pr-6">
-						<h3 className="font-bold text-sm sm:text-base text-zinc-100 line-clamp-1 group-hover:text-amber-400 transition-colors duration-300">
-							{movie.title}
-						</h3>
-						{releaseYear !== null ? (
+					<h3 className="font-bold text-sm sm:text-base text-zinc-100 line-clamp-3 group-hover:text-amber-400 transition-colors duration-300 pr-6 mb-1.5">
+						{movie.title}
+					</h3>
+					{releaseYear !== null ? (
+						<div className="mb-2">
 							<Badge
 								variant="outline"
 								className="border-zinc-800 text-zinc-500 text-[10px] uppercase font-semibold tracking-wider shrink-0 h-5 px-1.5 rounded w-fit"
 							>
 								{releaseYear}
 							</Badge>
-						) : null}
-					</div>
+						</div>
+					) : null}
 					<p className="text-xs text-zinc-400 leading-relaxed pr-6 pb-2">
 						{movie.overview
 							? truncateText(movie.overview, characterLimit)
