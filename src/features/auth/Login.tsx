@@ -1,5 +1,5 @@
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import { Badge } from "@/components/ui/badge";
@@ -23,8 +23,14 @@ export default function Login() {
 	const [authError, setAuthError] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 
+	const usernameRef = useRef<HTMLInputElement>(null);
+
 	useEffect(() => {
 		document.title = "Login | JDT-17";
+		// Focus on desktop viewport only to avoid mobile keyboard popups
+		if (usernameRef.current && window.matchMedia("(min-width: 768px)").matches) {
+			usernameRef.current.focus();
+		}
 	}, []);
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -138,6 +144,7 @@ export default function Login() {
 								</label>
 								<input
 									id="username"
+									ref={usernameRef}
 									type="text"
 									value={username}
 									onChange={(e) => setUsername(e.target.value)}
