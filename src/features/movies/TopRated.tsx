@@ -59,7 +59,7 @@ export default function TopRated() {
 
 			{/* Directory Listing States */}
 			{isLoading || isFetching ? (
-				<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+				<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 items-start">
 					{[1, 2, 3, 4, 5, 6, 7, 8].map((key) => (
 						<div
 							key={key}
@@ -113,7 +113,7 @@ export default function TopRated() {
 				</Card>
 			) : (
 				<>
-					<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+					<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 items-start">
 						{topRatedMovies.map((movie) => (
 							<MovieCard key={movie.id} movie={movie} />
 						))}
