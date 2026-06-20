@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import MovieCard from "./components/MovieCard";
+import MoviePageHeader from "./components/MoviePageHeader";
 import Pagination from "./components/Pagination";
 import { useGetPopularMoviesQuery } from "./moviesApi";
 
@@ -43,26 +43,40 @@ const Movies = () => {
 
 	return (
 		<div className="w-full">
-			{/* Sleek Search Header */}
-			<section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 text-center">
-				<div className="absolute inset-0 -z-10 bg-linear-to-b from-amber-500/5 to-transparent blur-3xl rounded-full" />
-				<h1 className="text-3xl sm:text-5xl font-black text-zinc-50 tracking-tight mb-6 leading-tight">
-					Find your next favorite movie.
-				</h1>
-				<form onSubmit={handleSearchSubmit} className="max-w-2xl mx-auto relative">
-					<input
-						type="text"
-						placeholder="Search for movies, actors, or genres..."
-						value={searchQuery}
-						onChange={(e) => setSearchQuery(e.target.value)}
-						className="w-full pl-6 pr-24 py-4 bg-zinc-900/40 border border-zinc-800/80 focus:border-amber-500/60 rounded-2xl text-base text-zinc-150 placeholder-zinc-500 focus:outline-hidden transition-all duration-300 shadow-inner"
-					/>
-					<button
-						type="submit"
-						className="absolute right-2 top-1/2 -translate-y-1/2 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-6 py-2.5 rounded-xl text-sm transition-colors duration-200 cursor-pointer"
-					>
-						Search
-					</button>
+			{/* Hero Search Section */}
+			<section className="relative h-[420px] md:h-[500px] flex items-center justify-center overflow-hidden bg-radial from-zinc-900 via-zinc-950 to-zinc-950 px-4 sm:px-6 lg:px-8 border-b border-zinc-900/60">
+				{/* Background Glow effects */}
+				<div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-3xl opacity-50 pointer-events-none" />
+				<div className="absolute bottom-10 left-10 w-[300px] h-[300px] bg-purple-500/5 rounded-full blur-3xl opacity-30 pointer-events-none" />
+
+				<form
+					onSubmit={handleSearchSubmit}
+					className="relative z-10 w-full max-w-2xl text-center space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500"
+				>
+					<div className="space-y-3">
+						<h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-zinc-50 via-zinc-200 to-zinc-400">
+							Explore Cinema
+						</h1>
+						<p className="text-zinc-400 text-base md:text-lg font-medium max-w-lg mx-auto">
+							Search millions of movies, check what's playing now, or explore top-rated films.
+						</p>
+					</div>
+
+					<div className="relative w-full max-w-xl mx-auto shadow-2xl rounded-2xl overflow-hidden">
+						<input
+							type="text"
+							placeholder="Search movies..."
+							value={searchQuery}
+							onChange={(e) => setSearchQuery(e.target.value)}
+							className="w-full bg-zinc-900/90 border border-zinc-800 hover:border-zinc-700 focus:border-amber-500/50 pl-6 pr-32 py-4 rounded-2xl text-base text-zinc-100 placeholder-zinc-500 focus:outline-hidden transition-all duration-300 shadow-inner"
+						/>
+						<button
+							type="submit"
+							className="absolute right-2 top-1/2 -translate-y-1/2 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-6 py-2.5 rounded-xl text-sm transition-colors duration-200 cursor-pointer"
+						>
+							Search
+						</button>
+					</div>
 				</form>
 			</section>
 
@@ -73,28 +87,7 @@ const Movies = () => {
 			>
 				<div className="border-t border-zinc-800/80 pt-10">
 					{/* Header */}
-					<div
-						id="popular-heading"
-						className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-zinc-900 pb-6"
-					>
-						<div>
-							<h2 className="text-xs font-bold tracking-widest text-amber-500 uppercase mb-3">
-								Movie Directory
-							</h2>
-							<h3 className="text-3xl font-bold tracking-tight text-zinc-50 sm:text-4xl">
-								Popular Movies Right Now
-							</h3>
-						</div>
-
-						<div className="flex items-center gap-4 w-full md:w-auto shrink-0">
-							<Badge
-								variant="secondary"
-								className="px-3 py-1 h-7 rounded-full text-sm font-semibold border-zinc-800 text-amber-400 bg-amber-500/10 shrink-0"
-							>
-								{isLoading || isFetching ? "Loading..." : `${popularMovies.length} Movies`}
-							</Badge>
-						</div>
-					</div>
+					<MoviePageHeader title="Popular Movies Right Now" />
 
 					{/* Directory Listing States */}
 					{isLoading || isFetching ? (

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import MovieCard from "./components/MovieCard";
+import MoviePageHeader from "./components/MoviePageHeader";
 import Pagination from "./components/Pagination";
 import { useSearchMoviesQuery } from "./moviesApi";
 
@@ -87,76 +87,60 @@ export default function Search() {
 			className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-left"
 		>
 			{/* Directory Header with Search */}
-			<div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-zinc-900 pb-6">
-				<div>
-					<h2 className="text-xs font-bold tracking-widest text-amber-500 uppercase mb-3">
-						Movie Directory
-					</h2>
-					<h3 className="text-3xl font-bold tracking-tight text-zinc-50 sm:text-4xl">
-						Search Movies
-					</h3>
-				</div>
-
+			<MoviePageHeader
+				title="Search Movies"
+				movieCount={debouncedQuery.trim() ? data?.total_results : undefined}
+				isLoading={isFetching}
+			>
 				{/* Sleek Search Input */}
-				<div className="flex items-center gap-4 w-full md:w-auto shrink-0">
-					<div className="relative w-full md:w-80">
-						<svg
-							className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							strokeWidth={2}
-						>
-							<title>Search Icon</title>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-							/>
-						</svg>
-						<input
-							type="text"
-							placeholder="Search movies by title..."
-							value={searchQuery}
-							onChange={(e) => {
-								setSearchQuery(e.target.value);
-							}}
-							className="w-full pl-10 pr-10 py-2.5 bg-zinc-900/40 border border-zinc-800/80 hover:border-zinc-700/80 focus:border-amber-500/50 rounded-xl text-sm text-zinc-150 placeholder-zinc-500 focus:outline-hidden transition-all duration-300 shadow-inner"
+				<div className="relative w-full md:w-80">
+					<svg
+						className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						strokeWidth={2}
+					>
+						<title>Search Icon</title>
+						<path
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
 						/>
-						{searchQuery && (
-							<button
-								type="button"
-								onClick={() => {
-									setSearchQuery("");
-									setDebouncedQuery("");
-								}}
-								className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 flex items-center justify-center rounded-full hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors"
-								aria-label="Clear search"
-							>
-								<svg
-									className="w-3.5 h-3.5"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-									strokeWidth={2.5}
-								>
-									<title>Clear Icon</title>
-									<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-								</svg>
-							</button>
-						)}
-					</div>
-
-					{debouncedQuery.trim() && (
-						<Badge
-							variant="secondary"
-							className="px-3 py-1 h-7 rounded-full text-sm font-semibold border-zinc-800 text-amber-400 bg-amber-500/10 shrink-0"
+					</svg>
+					<input
+						type="text"
+						placeholder="Search movies by title..."
+						value={searchQuery}
+						onChange={(e) => {
+							setSearchQuery(e.target.value);
+						}}
+						className="w-full pl-10 pr-10 py-2.5 bg-zinc-900/40 border border-zinc-800/80 hover:border-zinc-700/80 focus:border-amber-500/50 rounded-xl text-sm text-zinc-150 placeholder-zinc-500 focus:outline-hidden transition-all duration-300 shadow-inner"
+					/>
+					{searchQuery && (
+						<button
+							type="button"
+							onClick={() => {
+								setSearchQuery("");
+								setDebouncedQuery("");
+							}}
+							className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 flex items-center justify-center rounded-full hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors"
+							aria-label="Clear search"
 						>
-							{isFetching ? "Loading..." : `${data?.total_results || 0} Matches`}
-						</Badge>
+							<svg
+								className="w-3.5 h-3.5"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								strokeWidth={2.5}
+							>
+								<title>Clear Icon</title>
+								<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+							</svg>
+						</button>
 					)}
 				</div>
-			</div>
+			</MoviePageHeader>
 
 			{/* Directory Listing States */}
 			{isFetching ? (
