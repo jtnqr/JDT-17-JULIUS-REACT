@@ -315,7 +315,7 @@ export default function MovieLayout() {
 					{/* Mobile Navigation Controls */}
 					<div className="flex sm:hidden items-center gap-1.5 shrink-0">
 						{/* Search Icon Link */}
-						{location.pathname !== "/movies/search" && !hasInPageSearch && (
+						{location.pathname !== "/movies/search" && (!hasInPageSearch || showSearchOnScroll) && (
 							<Link
 								to="/movies/search"
 								className="p-2 text-zinc-450 hover:text-zinc-100 hover:bg-zinc-900 rounded-xl transition-colors cursor-pointer flex items-center justify-center h-9 w-9"
@@ -373,7 +373,7 @@ export default function MovieLayout() {
 
 					{/* Navbar Search Input (hidden on popular page except when scrolled down, Desktop only) */}
 					{location.pathname !== "/movies/search" &&
-						!hasInPageSearch &&
+						(!hasInPageSearch || showSearchOnScroll) &&
 						(!isPopularPage || showSearchOnScroll) && (
 							<form
 								onSubmit={handleNavSearchSubmit}
