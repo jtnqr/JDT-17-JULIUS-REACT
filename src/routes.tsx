@@ -9,7 +9,7 @@ const Login = lazy(() => import("./features/auth/Login"));
 const CV = lazy(() => import("./features/cv/CV"));
 const MovieLayout = lazy(() => import("./features/movies/components/MovieLayout"));
 const Movies = lazy(() => import("./features/movies/Movies"));
-const NowPlaying = lazy(() => import("./features/movies/NowPlaying"));
+const Popular = lazy(() => import("./features/movies/Popular"));
 const MoviesSearch = lazy(() => import("./features/movies/Search"));
 const MoviesTopRated = lazy(() => import("./features/movies/TopRated"));
 const MoviesUpcoming = lazy(() => import("./features/movies/Upcoming"));
@@ -59,8 +59,8 @@ export const router = createBrowserRouter([
 								element: <Movies />,
 							},
 							{
-								path: "now-playing",
-								element: <NowPlaying />,
+								path: "popular",
+								element: <Popular />,
 							},
 							{
 								path: "search",
