@@ -35,7 +35,7 @@ export default function MovieLayout() {
 		return () => observer.disconnect();
 	}, [location.pathname]);
 
-	const isPopularPage = location.pathname === "/movies" || location.pathname === "/movies/";
+	const isDefaultMoviesPage = location.pathname === "/movies" || location.pathname === "/movies/";
 	const urlQuery = searchParams.get("q") || "";
 	const [navSearchQuery, setNavSearchQuery] = useState(urlQuery);
 	const [showSearchOnScroll, setShowSearchOnScroll] = useState(false);
@@ -45,9 +45,9 @@ export default function MovieLayout() {
 		setNavSearchQuery(urlQuery);
 	}, [urlQuery]);
 
-	// Handle scroll for search visibility on popular page
+	// Handle scroll for search visibility on default movies page
 	useEffect(() => {
-		if (!isPopularPage) {
+		if (!isDefaultMoviesPage) {
 			setShowSearchOnScroll(false);
 			return;
 		}
@@ -63,7 +63,7 @@ export default function MovieLayout() {
 		return () => {
 			window.removeEventListener("scroll", handleScroll);
 		};
-	}, [isPopularPage]);
+	}, [isDefaultMoviesPage]);
 
 	// Automatically update search params on query change (only active on /movies/search)
 	useEffect(() => {
@@ -277,17 +277,17 @@ export default function MovieLayout() {
 									}`
 								}
 							>
-								Popular
+								Movies
 							</NavLink>
 							<NavLink
-								to="/movies/now-playing"
+								to="/movies/popular"
 								className={({ isActive }) =>
 									`text-xs sm:text-sm font-bold py-2 transition-colors duration-200 whitespace-nowrap shrink-0 ${
 										isActive ? "text-amber-500" : "text-zinc-450 hover:text-zinc-100"
 									}`
 								}
 							>
-								Now Playing
+								Popular
 							</NavLink>
 							<NavLink
 								to="/movies/top-rated"
@@ -374,7 +374,7 @@ export default function MovieLayout() {
 					{/* Navbar Search Input (hidden on popular page except when scrolled down, Desktop only) */}
 					{location.pathname !== "/movies/search" &&
 						(!hasInPageSearch || showSearchOnScroll) &&
-						(!isPopularPage || showSearchOnScroll) && (
+						(!isDefaultMoviesPage || showSearchOnScroll) && (
 							<form
 								onSubmit={handleNavSearchSubmit}
 								className="hidden sm:block relative w-full max-w-[160px] sm:max-w-[240px] animate-in fade-in slide-in-from-right-3 duration-250 shrink-0"
@@ -447,10 +447,10 @@ export default function MovieLayout() {
 								}`
 							}
 						>
-							Popular
+							Movies
 						</NavLink>
 						<NavLink
-							to="/movies/now-playing"
+							to="/movies/popular"
 							onClick={() => setIsMobileMenuOpen(false)}
 							className={({ isActive }) =>
 								`text-xs font-bold py-2.5 px-3 rounded-lg transition-colors duration-200 ${
@@ -460,7 +460,7 @@ export default function MovieLayout() {
 								}`
 							}
 						>
-							Now Playing
+							Popular
 						</NavLink>
 						<NavLink
 							to="/movies/top-rated"
